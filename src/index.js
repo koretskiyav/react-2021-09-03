@@ -1,7 +1,8 @@
-import ReactDOM from 'react-dom';
-import App from './components/app';
-import { restaurants } from './fixtures';
 import './index.css';
+
+import App from './components/app';
+import ReactDOM from 'react-dom';
+import { restaurants } from './fixtures';
 
 ReactDOM.render(
   <App restaurants={restaurants} />,
