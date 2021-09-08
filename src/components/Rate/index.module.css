@@ -1,0 +1,16 @@
+.gray {
+  fill: lightgray;
+}
+
+.yellow {
+  fill: orange;
+}
+
+.size-2 {
+  width: 1.5em;
+  height: 1.5em;
+}
+
+.mt-1 {
+  margin-top: 0.75em;
+}
