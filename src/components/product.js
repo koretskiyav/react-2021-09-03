@@ -1,4 +1,5 @@
 import counter from '../hocs/counter';
+import Rate from './rate';
 
 import style from './product.module.css';
 
@@ -17,6 +18,7 @@ function Product({ product, amount, decrement, increment }) {
       <button onClick={increment}>
         <Plus className={style.icon} />
       </button>
+      <Rate className={style.rate} />
     </div>
   );
 }
