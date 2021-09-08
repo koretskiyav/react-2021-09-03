@@ -1,0 +1,21 @@
+.user {
+    margin: 15px 0;
+}
+
+.text {
+    margin-bottom: 10px;
+}
+
+.rate {
+    position: relative;
+}
+
+.rate:after {
+    content: "";
+    height: 2px;
+    background-color: black;
+    width: 100%;
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+}
