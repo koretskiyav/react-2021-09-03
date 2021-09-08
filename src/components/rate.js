@@ -4,15 +4,14 @@ import style from './product.module.css';
 export default function Rate({ value }){
   let stars = [];
   while(value > 0){
-    stars.push(<span><Star className={style.star}  key={value}/></span>);
+    stars.push(value);
     value--;
   }
   return (
      <div>
        <div>
-         {stars.map((star) => (
-           star
-         ))}
+         {stars.map((keyValue)=>(<span><Star className={style.star}  key={Math.random()}/></span>))
+         }
        </div>
      </div>
   );
