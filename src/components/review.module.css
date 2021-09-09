@@ -1,0 +1,12 @@
+.card {
+  margin: 10px;
+  padding-left: 15px;
+  background: #eeffee;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  width: 200px;
+}
+
+.wrapper {
+  display: table-cell;
+}
