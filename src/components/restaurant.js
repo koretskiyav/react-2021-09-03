@@ -8,11 +8,13 @@ export default function Restaurant ({ activeRestaurant }) {
     (Object.values(activeRestaurant.reviews)
     .map((insert) => (insert.rating)));
 
-  function middleSum() {
-    for (let i = 0; i < middleRate.length - 1; i++) {
-      let sum = middleRate[i] + middleRate[i + 1];
-      return sum / middleRate.length;
+  function middleSum(int) {
+    let sum = 0;
+    let count = int.length;
+    for (let i = 0; i < count; i++) {
+      sum += int[i];
     }
+    return sum/count;
   }
 
   return (
@@ -26,7 +28,7 @@ export default function Restaurant ({ activeRestaurant }) {
         ))}
       </p> */}
       <p>Средний рейтинг:</p>
-      <Rate review = {middleSum()}/>
+      <Rate review = {middleSum(middleRate)}/>
     </div>
   );
 }
