@@ -1,0 +1,19 @@
+.icon g {
+    fill: #fff;
+    stroke: #f5b34a;
+    stroke-width: 400px;
+}
+
+.iconFill g {
+    fill: #f5b34a;
+}
+
+.icon {
+    height: 24px;
+    width: 24px;
+}
+
+.rating {
+    display: inline-block;
+    padding-left: 8px;
+}

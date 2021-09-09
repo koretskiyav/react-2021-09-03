@@ -1,0 +1,10 @@
+.card {
+    margin: 10px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+}
+
+.cardTitle {
+    padding-left: 20px;
+}
