@@ -7,8 +7,8 @@ export default function Reviews({ reviews }) {
       <tr></tr><tr></tr>
       {reviews.map((review) => (
         <div key={review.id}>
-          <h3>{review.user}</h3>
-          <h4>{review.text}</h4>
+          <h3>{review.user}:</h3>
+          <p>{review.text}</p>
           <Rate value={review.rating}/>
           <tr></tr><tr></tr>
         </div>

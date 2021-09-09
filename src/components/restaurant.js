@@ -12,8 +12,9 @@ export default function Restaurant({ restaurant }) {
   return (
     <div>
       <Menu menu={restaurant.menu} />
+      <hr></hr>
       <Reviews reviews={restaurant.reviews} />
-      <h3>Average rating</h3>
+      <h3>Average rating:</h3>
       <Rate value={averageСalculationRates(restaurant.reviews)} />
     </div>
   );

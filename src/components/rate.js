@@ -1,4 +1,5 @@
 import { ReactComponent as Star } from '../icons/star.svg';
+import style from './rate.module.css';
 
 export default function Rate({ value }) {
   function createArrayRates(value) {
@@ -15,7 +16,7 @@ export default function Rate({ value }) {
   return (
       <div>
         {createArrayRates(value).map((rate) => (
-          <Star key={rate} />
+          <Star className={style.rate} key={rate} />
         ))}
       </div>
     );
