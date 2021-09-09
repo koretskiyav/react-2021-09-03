@@ -16,3 +16,11 @@ code {
 button {
   outline: none;
 }
+
+.icon path {
+  fill: teal;
+} 
+
+.icon path:hover {
+  fill: yellow;
+}
