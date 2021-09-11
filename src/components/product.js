@@ -18,7 +18,6 @@ function Product({ product, amount, decrement, increment }) {
       <button onClick={increment}>
         <Plus className={style.icon} />
       </button>
-      <Rate className={style.rate} />
     </div>
   );
 }

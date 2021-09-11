@@ -4,15 +4,10 @@ import Rate from './rate';
 import {useMemo} from 'react';
 
 export default function Restaurant({restaurant}){
-   const reviews = Array.isArray(restaurant.reviews) ? restaurant.reviews : [{rating: 3}];
+   const reviews = restaurant.reviews;
    const overallRate = useMemo(()=>{
-     let sumRate = 0;
-     let overallRate = 0.0;
-     reviews.forEach((review) =>{
-       sumRate += review.rating;
-     })
-     overallRate =  sumRate / reviews.length;
-     return overallRate;
+     const sumRate = reviews.reduce((sum, review)=> sum + review.rating, 0);
+     return sumRate/reviews.length;
    },[reviews])
     return (
       <div>
