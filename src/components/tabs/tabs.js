@@ -1,6 +1,6 @@
 import cn from 'classnames';
-
 import styles from './tabs.module.css';
+import PropTypes from 'prop-types';
 
 export default function Tabs({ tabs, activeId, onChange }) {
   return (
@@ -17,3 +17,16 @@ export default function Tabs({ tabs, activeId, onChange }) {
     </div>
   );
 }
+
+Tabs.propTypes = {
+  tabs: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+    }).isRequired
+  ).isRequired,
+  activeId: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
+
+
