@@ -11,11 +11,9 @@ const setUp = () => mount(<Product product={product} />);
 
 
 let component;
-let instance;
 
 beforeEach(() => {
   component = setUp();
-  instance = component.instance();
 });
 
 it('should render decrement', () => {
@@ -58,22 +56,15 @@ describe('Product', () => {
   //Рендер декремента
 
   it('should render decrement', () => {
-    const wrapper = mount(<Product product={product} />);
+    const wrapper = setUp();
     expect(wrapper.find('button[data-id="product-decrement"]').length).toBe(1);
-  });
-
-  //Тест по снэпшоту
-
-  it('should be like snapshot', () => {
-    const btn = component.find('button[data-id="product-decrement"]');
-    expect(component).toMatchSnapshot();
   });
 
   //Тест по клику на "-"
 
   it('should be 0 after click', () => {
     const btn = component.find('button[data-id="product-decrement"]');
-    const amount = mount(<Product product={product} />);
+    const amount = setUp();
     btn.simulate('click');
     expect(amount.find('[data-id="product-amount"]').text()).toBe('0');
   });

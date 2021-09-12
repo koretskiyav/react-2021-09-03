@@ -6,7 +6,11 @@ const Reviews = ({ reviews }) => {
   return (
     <div className={styles.reviews}>
       {reviews.map((review) => (
-        <Review key={review.id} {...review} />
+        <Review 
+          key={review.id} 
+          user={review.user} 
+          text={review.text} 
+          rating={review.rating} />
       ))}
     </div>
   );
