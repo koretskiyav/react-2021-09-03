@@ -19,10 +19,12 @@ export default function Tabs({ tabs, activeId, onChange }) {
   );
 }
 Tabs.propTypes = {
-  tabs: PropTypes.arrayOf({
-    id: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired,
-  }).isRequired,
+  tabs: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+    })
+  ).isRequired,
   activeId: PropTypes.string,
   onChange: PropTypes.func.isRequired,
 };

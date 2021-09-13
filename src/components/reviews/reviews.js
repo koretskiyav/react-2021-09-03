@@ -13,7 +13,7 @@ const Reviews = ({ reviews }) => {
   );
 };
 Reviews.propTypes = {
-  reviews: PropTypes.arrayOf(ReviewProps).isRequired,
+  reviews: PropTypes.arrayOf(PropTypes.shape(ReviewProps)).isRequired,
 };
 
 

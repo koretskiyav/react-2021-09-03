@@ -37,7 +37,7 @@ Restaurant.propTypes = {
         id: PropTypes.string.isRequired,
       }).isRequired
     ),
-    reviews: PropTypes.arrayOf(ReviewProps).isRequired,
+    reviews: PropTypes.arrayOf(PropTypes.shape(ReviewProps)).isRequired,
   }).isRequired,
 };
 
