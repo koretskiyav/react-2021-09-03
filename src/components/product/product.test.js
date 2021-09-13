@@ -1,4 +1,4 @@
-import Enzyme, { mount } from 'enzyme';
+import Enzyme, { mount, shallow } from 'enzyme';
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import Product from './product';
 import { restaurants } from '../../fixtures';
@@ -28,5 +28,13 @@ describe('Product', () => {
     const fn = jest.fn();
     mount(<Product product={product} fetchData={fn} />);
     expect(fn).toBeCalledWith(product.id);
+  });
+
+  it('should decrease the number of dishes', () => {
+    const wrapper = mount(<Product product={product} />);
+    expect(wrapper.find('[data-id="product-amount"]').text()).toBe('0');
+    wrapper.find('button[data-id="product-increment"]').simulate('click');
+    wrapper.find('button[data-id="product-decrement"]').simulate('click');
+    expect(wrapper.find('[data-id="product-amount"]').text()).toBe('0');
   });
 });
