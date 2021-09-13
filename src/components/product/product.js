@@ -5,10 +5,7 @@ import counter from '../../hocs/counter';
 import styles from './product.module.css';
 import Button from '../button';
 
-function Product({ product, amount, decrement, increment, fetchData }) {
-  useEffect(() => {
-    fetchData && fetchData(product.id);
-  }, []); // eslint-disable-line
+function Product({ product, amount, decrement, increment}) {
 
   return (
     <div className={styles.product} data-id="product">
@@ -24,7 +21,11 @@ function Product({ product, amount, decrement, increment, fetchData }) {
               {amount}
             </div>
             <div className={styles.buttons}>
-              <Button onClick={decrement} icon="minus" />
+              <Button
+                onClick={decrement}
+                icon="minus"
+                data-id="product-decrement"
+              />
               <Button
                 onClick={increment}
                 icon="plus"
