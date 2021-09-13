@@ -1,6 +1,6 @@
-import Enzyme, { mount, shallow } from 'enzyme';
+import Enzyme, { mount } from 'enzyme';
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
-import Review from './review/review';
+// import Review from './review/review';
 import Reviews from './reviews';
 
 import { restaurants } from '../../fixtures';
@@ -9,55 +9,60 @@ Enzyme.configure({ adapter: new Adapter() });
 
 const review = restaurants[0].reviews[0];
 
-const reviews = {
+const reference = {
   id: '5909796d-5030-4e36-adec-68b8f9ec2d96',
   user: 'Antony',
   text: 'Not bad',
   rating: 5,
 }
 
-const setUp = () => mount
-(<Review 
-  key={review.id}
-  user={review.user} 
-  text={review.text}
-  rating={review.rating} 
-/>);
+const setUp = (props) => mount(<Reviews reviews={[review]}/>);
+// const reviewSetUp = () => mount
+// (<Review 
+//   key={review.id}
+//   user={review.user} 
+//   text={review.text}
+//   rating={review.rating} 
+// />);
 
-let reviewComponent;
+let wrapper;
 
 beforeEach(() => {
-  reviewComponent = setUp();
+  wrapper = setUp();
 });
 
-describe('Reviews', () => {
+describe('Reviews & Review', () => {
+  it('should render Reviews', () => {
+    expect(wrapper.find('[data-id="rev"]').length).toBe(1);
+  });
+
   it('should render Review', () => {
-    expect(reviewComponent.find('[data-id="review"]').length).toBe(1);
+    expect(wrapper.find('[data-id="review"]').length).toBe(1);
   });
   
-  describe('Field name', () => {
+  describe('Review field name', () => {
     it('should render', () => {
-      expect(reviewComponent.find('[data-id="review_name"]').length).toBe(1);
+      expect(wrapper.find('[data-id="review_name"]').length).toBe(1);
     });
 
-    it('should equal configure', () => {
-      expect(reviewComponent.find('[data-id="review_name"]').text()).toBe(reviews.user);
+    it('should equal reference', () => {
+      expect(wrapper.find('[data-id="review_name"]').text()).toBe(reference.user);
     });
   });
 
-  describe('Field text', () => {
+  describe('Review field text', () => {
     it('should render', () => {
-      expect(reviewComponent.find('[data-id="review_text"]').length).toBe(1);
+      expect(wrapper.find('[data-id="review_text"]').length).toBe(1);
     });
 
-    it('should equal configure', () => {
-      expect(reviewComponent.find('[data-id="review_text"]').text()).toBe(reviews.text);
+    it('should equal reference', () => {
+      expect(wrapper.find('[data-id="review_text"]').text()).toBe(reference.text);
     });
   });
   
-  describe('Field rating', () => {
+  describe('Review field rating', () => {
     it('should render', () => {
-      expect(reviewComponent.find('[data-id="review_rating"]').length).toBe(1);
+      expect(wrapper.find('[data-id="review_rating"]').length).toBe(1);
     });
   });
 });
