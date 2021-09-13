@@ -1,4 +1,5 @@
 import cn from 'classnames';
+import PropTypes from 'prop-types';
 
 import { ReactComponent as Star } from '../../icons/star.svg';
 
@@ -10,9 +11,14 @@ const Rate = ({ value }) => (
       <Star
         key={i}
         className={cn(styles.star, { [styles.checked]: i <= value - 1 })}
+        data-id=""
       />
     ))}
   </div>
 );
+
+Rate.propTypes = {
+  value: PropTypes.number.isRequired
+};
 
 export default Rate;
