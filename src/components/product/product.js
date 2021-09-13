@@ -47,6 +47,7 @@ Product.propTypes = {
   amount: PropTypes.number,
   increment: PropTypes.func,
   decrement: PropTypes.func,
+  fetchData: PropTypes.func,
 };
 
 export default counter(Product);
