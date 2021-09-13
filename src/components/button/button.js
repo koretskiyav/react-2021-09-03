@@ -9,7 +9,10 @@ const icons = {
   minus: MinusIcon,
 };
 
-const Button = ({ icon, onClick, dataId }) => {
+const Button = (props) => {
+  const { icon, onClick } = props;
+  const dataId = props['data-id'];
+
   const Icon = icons[icon];
   return (
     <button className={styles.button} onClick={onClick} data-id={dataId}>
