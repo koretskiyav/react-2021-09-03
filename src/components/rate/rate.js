@@ -1,5 +1,5 @@
-import cn from 'classnames';
 import PropTypes from 'prop-types';
+import cn from 'classnames';
 
 import { ReactComponent as Star } from '../../icons/star.svg';
 
@@ -10,6 +10,7 @@ const Rate = ({ value }) => (
     {[...Array(5)].map((_, i) => (
       <Star
         key={i}
+        data-id={i <= value - 1 ? 'full-star' : 'empty-star'}
         className={cn(styles.star, { [styles.checked]: i <= value - 1 })}
       />
     ))}
@@ -17,7 +18,7 @@ const Rate = ({ value }) => (
 );
 
 Rate.propTypes = {
-  value: PropTypes.number.isRequired
+  value: PropTypes.number.isRequired,
 }
 
 export default Rate;

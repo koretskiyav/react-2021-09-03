@@ -1,9 +1,10 @@
 // import { useEffect } from 'react';
 import PropTypes from 'prop-types';
-
-import counter from '../../hocs/counter';
+// import counter from '../../hocs/counter';
+import { connect } from 'react-redux';
 import styles from './product.module.css';
 import Button from '../button';
+import {increment, decrement} from '../../redux/actions';
 
 function Product({ product, amount, decrement, increment, /*fetchData*/ }) {
   // useEffect(() => {
@@ -25,12 +26,12 @@ function Product({ product, amount, decrement, increment, /*fetchData*/ }) {
             </div>
             <div className={styles.buttons}>
               <Button
-                onClick={decrement}
+                onClick={() => decrement(product.id)}
                 icon="minus"
                 data-id="product-decrement"
               />
               <Button
-                onClick={increment}
+                onClick={() => increment(product.id)}
                 icon="plus"
                 data-id="product-increment"
               />
@@ -44,14 +45,30 @@ function Product({ product, amount, decrement, increment, /*fetchData*/ }) {
 
 Product.propTypes = {
   product: PropTypes.shape({
+
+    name: PropTypes.string,
+    price: PropTypes.number,
     ingredients: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-    name: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
   }).isRequired,
-  amount: PropTypes.number.isRequired,
-  increment: PropTypes.func.isRequired,
-  decrement: PropTypes.func.isRequired,
-  // fetchData: PropTypes.func.isRequired
+  fetchData: PropTypes.func,
+  // from HOC counter
+  amount: PropTypes.number,
+  increment: PropTypes.func,
+  decrement: PropTypes.func,
 };
 
-export default counter(Product);
+const mapStateToProps = (state) => ({
+amount: state.order
+})
+
+const mapDispatchToProps = {
+  increment,
+  decrement
+}
+
+// const mapDispatchToProps = (dispatch) => ({
+//   increment: () => dispatch(increment()),
+//   decrement: () => dispatch(decrement())
+// })
+
+export default connect(mapStateToProps, mapDispatchToProps)(Product);

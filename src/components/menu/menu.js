@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
+
 import Product from '../product';
 
 import styles from './menu.module.css';
@@ -23,7 +24,7 @@ class Menu extends Component {
     const { menu } = this.props;
 
     if (this.state.error) {
-      return <p>Меню данного ресторана сейчас недоступно :(</p>;
+      return <p>Меню этого ресторана сейчас недоступно :(</p>;
     }
 
     return (

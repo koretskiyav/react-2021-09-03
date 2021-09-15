@@ -1,5 +1,6 @@
-import styles from './button.module.css';
 import PropTypes from 'prop-types';
+
+import styles from './button.module.css';
 
 import { ReactComponent as PlusIcon } from '../../icons/plus.svg';
 import { ReactComponent as MinusIcon } from '../../icons/minus.svg';
@@ -19,6 +20,10 @@ const Button = (props) => {
       {Icon && <Icon />}
     </button>
   );
+};
+
+Button.propTypes = {
+  icon: PropTypes.string,
 };
 
 export default Button;

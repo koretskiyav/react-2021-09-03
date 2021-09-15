@@ -16,11 +16,8 @@ Reviews.propTypes = {
   reviews: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,
-      user: PropTypes.string.isRequired,
-      text: PropTypes.string.isRequired,
-      rating: PropTypes.number.isRequired      
     }).isRequired
-  ).isRequired
-}
+  ).isRequired,
+};
 
 export default Reviews;
