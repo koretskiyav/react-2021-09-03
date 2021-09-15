@@ -1,10 +1,9 @@
-// import { useEffect } from 'react';
-import PropTypes from 'prop-types';
-// import counter from '../../hocs/counter';
+import { useEffect } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import styles from './product.module.css';
 import Button from '../button';
-import {increment, decrement} from '../../redux/actions';
+import { decrement, increment } from '../../redux/actions';
 
 function Product({ product, amount, decrement, increment, /*fetchData*/ }) {
   // useEffect(() => {
@@ -51,24 +50,24 @@ Product.propTypes = {
     ingredients: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   }).isRequired,
   fetchData: PropTypes.func,
-  // from HOC counter
+  // from connect
   amount: PropTypes.number,
   increment: PropTypes.func,
   decrement: PropTypes.func,
 };
 
-const mapStateToProps = (state) => ({
-amount: state.order
-})
+const mapStateToProps = (state, props) => ({
+  amount: state.order[props.product.id] || 0,
+});
 
-const mapDispatchToProps = {
-  increment,
-  decrement
-}
+// const mapDispatchToProps = {
+//   increment,
+//   decrement,
+// };
 
-// const mapDispatchToProps = (dispatch) => ({
-//   increment: () => dispatch(increment()),
-//   decrement: () => dispatch(decrement())
-// })
+const mapDispatchToProps = (dispatch, props) => ({
+  increment: () => dispatch(increment(props.product.id)),
+  decrement: () => dispatch(decrement(props.product.id)),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Product);
