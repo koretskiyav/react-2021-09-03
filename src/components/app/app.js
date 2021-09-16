@@ -10,14 +10,8 @@ export default class App extends PureComponent {
     return (
       <div>
         <Header />
-        <Switch>
-          <Route path='/' exact>
-            <Restaurants restaurants={this.props.restaurants} />
-          </Route>
-          <Route path='/basket' exact>
-            <Basket />
-          </Route>
-        </Switch>
+        <Restaurants restaurants={this.props.restaurants} />
+        <Basket />
       </div>
     );
   }
