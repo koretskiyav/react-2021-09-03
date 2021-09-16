@@ -6,8 +6,7 @@ import ReactDOM from 'react-dom';
 import { restaurants } from './fixtures';
 import store from './redux/store';
 
-// DEV ONLY!!!
-window.store = store;
+Window.store = store;
 
 ReactDOM.render(
   <Provider store={store}>
