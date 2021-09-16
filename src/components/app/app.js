@@ -2,6 +2,8 @@ import { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Restaurants from '../restaurants';
 import Header from '../header';
+import { Route, Switch } from 'react-router-dom';
+import { Basket } from '../basket';
 
 export default class App extends PureComponent {
   render() {
@@ -9,11 +11,12 @@ export default class App extends PureComponent {
       <div>
         <Header />
         <Restaurants restaurants={this.props.restaurants} />
+        <Basket />
       </div>
     );
   }
 }
 
 App.propTypes = {
-  restaurants: PropTypes.array,
+  restaurants: PropTypes.array
 };
