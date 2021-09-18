@@ -42,6 +42,11 @@ function Basket({ title = 'Basket', total, orderProducts }) {
   );
 }
 
+// const mapStateToProps = (state) => ({
+//   total: totalSelector(state),
+//   orderProducts: orderProductsSelector(state),
+// });
+
 export default connect((state) => {
   return {
     total: totalSelector(state),
