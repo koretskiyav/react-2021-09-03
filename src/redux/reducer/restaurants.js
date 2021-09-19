@@ -5,11 +5,6 @@ const defaultRestaurants = normalizedRestaurants.reduce(
   {}
 );
 
-export default (restaurants = defaultRestaurants, action) => {
-  const { type } = action;
-
-  switch (type) {
-    default:
-      return restaurants;
-  }
+export default (restaurants = defaultRestaurants) => {
+  return restaurants;
 };

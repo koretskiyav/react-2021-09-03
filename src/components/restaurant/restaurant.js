@@ -5,11 +5,9 @@ import Reviews from '../reviews';
 import Banner from '../banner';
 import Rate from '../rate';
 import Tabs from '../tabs';
-import { connect } from 'react-redux';
-import restaurant from '.';
 
-const Restaurant = ({ id, restaurant }) => {
-  const { name, menu, reviews } = restaurant;
+const Restaurant = ({ restaurant }) => {
+  const { id, name, menu, reviews } = restaurant;
 
   const [activeTab, setActiveTab] = useState('menu');
 
@@ -52,4 +50,4 @@ const mapStateToProps = (state, props) => ({
   restaurant: state.restaurants[props.id],
 });
 
-export default connect(mapStateToProps, null)(Restaurant);
+export default Restaurant;
