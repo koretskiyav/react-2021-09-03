@@ -1,7 +1,8 @@
 import { normalizedReviews } from '../../fixtures';
 
 const defaultReviews = normalizedReviews.reduce(
-  (acc, review) => ({...acc, [review.id]: review}),
+  (acc, review) => ({...acc, [review.id]: review}), 
+  {}
 );
 
 export default (reviews = defaultReviews, action) => {
