@@ -26,9 +26,17 @@ export const totalSelector = createSelector(
 );
 
 export const reviewSelector = createSelector(
-  [reviewsSelector, usersSelector],
-  (review, user) =>
-    Object.values(review),
+  [reviewsSelector],
+  (review) =>
+    Object.values(review)
+);
+
+export const userSelector = createSelector(
+  [usersSelector, reviewsSelector],
+  (users, reviews) =>
+    Object.keys(reviews)
+    .filter((userId) => reviews[userId])
+    .map((userId) => users[userId])
 );
 
 export const restSelector = createSelector(
