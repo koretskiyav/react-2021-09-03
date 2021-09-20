@@ -1,4 +1,6 @@
 export const INCREMENT = 'INCREMENT';
 export const DECREMENT = 'DECREMENT';
-export const REMOVEITEM = 'REMOVEITEM';
-export const SHOWBASKET = 'SHOWBASKET';
+export const REMOVE = 'REMOVE';
+export const ADDREVIEW = 'ADDREVIEW';
+export const ADDUSER = 'ADDUSER';
+export const ADDREVIEWTORESTAURANT = 'ADDREVIEWTORESTAURANT';

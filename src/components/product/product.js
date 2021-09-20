@@ -4,11 +4,12 @@ import PropTypes from 'prop-types';
 import styles from './product.module.css';
 import Button from '../button';
 import { decrement, increment } from '../../redux/actions';
+import { amountSelector, productSelector } from '../../redux/selectors';
 
-function Product({ product, amount, decrement, increment, /*fetchData*/ }) {
-  // useEffect(() => {
-  //   fetchData && fetchData(product.id);
-  // }, []); // eslint-disable-line
+function Product({ product, amount, decrement, increment, fetchData }) {
+  useEffect(() => {
+    fetchData && fetchData(product.id);
+  }, []); // eslint-disable-line
 
   return (
     <div className={styles.product} data-id="product">
@@ -25,12 +26,12 @@ function Product({ product, amount, decrement, increment, /*fetchData*/ }) {
             </div>
             <div className={styles.buttons}>
               <Button
-                onClick={() => decrement(product)}
+                onClick={decrement}
                 icon="minus"
                 data-id="product-decrement"
               />
               <Button
-                onClick={() => increment(product)}
+                onClick={increment}
                 icon="plus"
                 data-id="product-increment"
               />
@@ -44,7 +45,6 @@ function Product({ product, amount, decrement, increment, /*fetchData*/ }) {
 
 Product.propTypes = {
   product: PropTypes.shape({
-
     name: PropTypes.string,
     price: PropTypes.number,
     ingredients: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
@@ -57,7 +57,8 @@ Product.propTypes = {
 };
 
 const mapStateToProps = (state, props) => ({
-  amount: state.order[props.product.id] ? state.order[props.product.id].count : 0,
+  amount: amountSelector(state, props.id), //state.order[props.id] || 0,
+  product: productSelector(state, props.id)
 });
 
 // const mapDispatchToProps = {
@@ -66,8 +67,8 @@ const mapStateToProps = (state, props) => ({
 // };
 
 const mapDispatchToProps = (dispatch, props) => ({
-  increment: () => dispatch(increment(props.product)),
-  decrement: () => dispatch(decrement(props.product)),
+  increment: () => dispatch(increment(props.id)),
+  decrement: () => dispatch(decrement(props.id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Product);

@@ -1,1 +1,1 @@
-export {default} from './Basket';
+export { default } from './basket';

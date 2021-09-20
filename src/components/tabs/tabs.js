@@ -1,9 +1,7 @@
 import PropTypes from 'prop-types';
 import cn from 'classnames';
 
-
 import styles from './tabs.module.css';
-import BasketBtn from '../basketBtn/';
 
 function Tabs({ tabs, activeId, onChange }) {
   return (
@@ -17,20 +15,8 @@ function Tabs({ tabs, activeId, onChange }) {
           {label}
         </span>
       ))}
-      <BasketBtn />
     </div>
   );
-};
-
-Tabs.propTypes = {
-  tabs: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      label: PropTypes.string.isRequired
-    }).isRequired
-  ).isRequired,
-  activeId: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired
 }
 
 Tabs.propTypes = {

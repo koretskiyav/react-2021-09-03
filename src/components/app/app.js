@@ -14,12 +14,8 @@ export default class App extends PureComponent {
     return (
       <div>
         <Header />
-        <Restaurants restaurants={this.props.restaurants} />
+        <Restaurants />
       </div>
     );
   }
 }
-
-App.propTypes = {
-  restaurants: PropTypes.array,
-};
