@@ -1,4 +1,5 @@
 import { normalizedUsers } from '../../fixtures';
+import { ADD_USER } from '../constants';
 
 
 const defaulUsers = normalizedUsers.reduce(
@@ -7,9 +8,10 @@ const defaulUsers = normalizedUsers.reduce(
 );
 
 export default (users = defaulUsers, action) => {
-  const { type } = action;
-
+  const { type, user } = action;
   switch (type) {
+    case ADD_USER:
+      return { ...users, [user.id]: user };
     default:
       return users;
   }

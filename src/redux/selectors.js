@@ -3,9 +3,6 @@ import { createSelector } from 'reselect';
 // const restaurantsSelector = (state) => state.restaurants;
 const productsSelector = (state) => state.products;
 const orderSelector = (state) => state.order;
-const userSelector = (state) => state.users;
-const reviewSelector = (state) => state.reviews;
-const restaurantSelector = (state) => state.restaurants;
 
 
 
@@ -29,13 +26,15 @@ export const totalSelector = createSelector(
     orderProducts.reduce((acc, { subtotal }) => acc + subtotal, 0)
 );
 
+//*************************************************************** */
+
 export const userReviewSelector = createSelector(
-  [userSelector, (state, userId) => userId],
+  [(state) => state.users, (state, userId) => userId],
   (users, userId) => users[userId].name,
 );
 
 export const restaurantReviewsSelector = createSelector(
-  [reviewSelector, (state, arrId) => arrId],
+  [(state) => state.reviews, (state, arrId) => arrId],
   (reviews, arrId) => {
     const fn = arr => obj => (arr.map(id => obj[id]));
     return fn(arrId)(reviews);
@@ -43,8 +42,29 @@ export const restaurantReviewsSelector = createSelector(
 );
 
 export const restaurantsSelector = createSelector(
-  [restaurantSelector],
+  [(state) => state.restaurants],
   (restaurants) => restaurants,
+);
+
+export const ammountSelector = createSelector(
+  [(state) => state.order, (state, productId) => productId],
+  (orders, productId) => {
+    return orders[productId] || 0;
+  },
+);
+
+export const productSelector = createSelector(
+  [(state) => state.products, (state, productId) => productId],
+  (products, productId) => {
+    return products[productId];
+  },
+);
+
+export const restaurantSelector = createSelector(
+  [(state) => state.restaurants, (state, restaurantId) => restaurantId],
+  (restaurants, restaurantId) => {
+    return restaurants[restaurantId];
+  },
 );
 
 
