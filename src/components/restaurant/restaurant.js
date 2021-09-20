@@ -33,17 +33,17 @@ const Restaurant = ({ restaurant }) => {
   );
 };
 
-Restaurant.propTypes = {
-  restaurant: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    name: PropTypes.string,
-    menu: PropTypes.array,
-    reviews: PropTypes.arrayOf(
-      PropTypes.shape({
-        rating: PropTypes.number.isRequired,
-      }).isRequired
-    ).isRequired,
-  }).isRequired,
-};
+// Restaurant.propTypes = {
+//   restaurant: PropTypes.shape({
+//     id: PropTypes.string.isRequired,
+//     name: PropTypes.string,
+//     menu: PropTypes.array,
+//     reviews: PropTypes.arrayOf(
+//       PropTypes.shape({
+//         rating: PropTypes.number.isRequired,
+//       }).isRequired
+//     ).isRequired,
+//   }).isRequired,
+// };
 
 export default Restaurant;
