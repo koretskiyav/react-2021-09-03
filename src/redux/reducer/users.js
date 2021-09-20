@@ -1,15 +1,18 @@
 import { normalizedUsers } from '../../fixtures';
+import { ADDUSER } from '../constants';
 
 const defaultUsers = normalizedUsers.reduce(
-  (acc, product) => ({ ...acc, [product.id]: product }),
+  (acc, users) => ({ ...acc, [users.id]: users }),
   {}
 );
 
-export default (products = defaultUsers, action) => {
-  const { type } = action;
+export default (users = defaultUsers, action) => {
+  const { type, user } = action;
 
   switch (type) {
+    case ADDUSER:
+      return {...users, [user.id]: user}
     default:
-      return products;
+      return users;
   }
 };

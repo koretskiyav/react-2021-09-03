@@ -33,9 +33,6 @@ const Restaurant = ({ restaurant, allReviews }) => {
     { id: 'reviews', label: 'Reviews' }
   ];
 
-  useEffect(()=>{
-    console.log(currReviews);},[currReviews])
-
   return (
     <div>
       <Banner heading={name}>
@@ -43,7 +40,7 @@ const Restaurant = ({ restaurant, allReviews }) => {
       </Banner>
       <Tabs tabs={tabs} activeId={activeTab} onChange={setActiveTab} />
       {activeTab === 'menu' && <Menu menu={menu} key={id} />}
-      {activeTab === 'reviews' && <Reviews reviews={currReviews || []} />}
+      {activeTab === 'reviews' && <Reviews reviews={currReviews || []} restaurantID={id} />}
     </div>
   );
 };
