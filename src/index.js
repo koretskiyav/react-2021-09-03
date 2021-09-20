@@ -6,7 +6,7 @@ import App from './components/app';
 import store from './redux/store';
 
 // DEV ONLY!!!
-window.store = store;
+store.subscribe(() => console.log(store.getState()));
 
 ReactDOM.render(
   <Provider store={store}>

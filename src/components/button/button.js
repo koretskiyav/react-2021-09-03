@@ -48,3 +48,9 @@ Button.propTypes = {
 };
 
 export default Button;
+
+Button.propTypes = {
+  icon: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired
+  // Проп data-id решил не проверять, так как он нужен для тестов. Как на практике, тестовые атрибуты тоже в propTypes загоняют?
+}

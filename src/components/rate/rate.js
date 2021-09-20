@@ -23,6 +23,6 @@ const Rate = ({ value, onChange }) => (
 
 Rate.propTypes = {
   value: PropTypes.number.isRequired,
-};
+}
 
 export default Rate;
