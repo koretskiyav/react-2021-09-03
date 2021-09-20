@@ -46,4 +46,8 @@ Restaurant.propTypes = {
   }).isRequired,
 };
 
+const mapStateToProps = (state, props) => ({
+  restaurant: state.restaurants[props.id],
+});
+
 export default Restaurant;
