@@ -3,6 +3,8 @@ import { createSelector } from 'reselect';
 // const restaurantsSelector = (state) => state.restaurants;
 const productsSelector = (state) => state.products;
 const orderSelector = (state) => state.order;
+const restaurantReviews = (state,restaurant)=> restaurant.reviews;
+const reviews = (state) => state.reviews
 
 export const orderProductsSelector = createSelector(
   [productsSelector, orderSelector],
@@ -22,3 +24,9 @@ export const totalSelector = createSelector(
   (orderProducts) =>
     orderProducts.reduce((acc, { subtotal }) => acc + subtotal, 0)
 );
+
+export const loadedRestaurantReviews = createSelector(
+      [restaurantReviews, reviews],
+            (reviewIds, reviews) => reviewIds.reduce((acc, id)=> ({...acc, [id]:reviews[id]}),[])
+
+)
