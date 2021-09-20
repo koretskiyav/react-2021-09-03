@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-
+import { addReview } from '../../../redux/actions';
 import useForm from '../../../hooks/use-form';
 import Rate from '../../rate';
 import Button from '../../button';
@@ -50,6 +50,10 @@ const ReviewForm = ({ onSubmit }) => {
     </div>
   );
 };
+
+const mapDispatchToProps = (dispatch, props) => ({
+  addReview: () => dispatch(addReview(props.id)),
+});
 
 export default connect(null, () => ({
   onSubmit: (values) => console.log(values), // TODO
