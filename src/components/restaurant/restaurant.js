@@ -10,8 +10,8 @@ import { loadedRestaurantReviews } from '../../redux/selectors';
 
 
 
-const Restaurant = ({restaurant, reviews}) => {
-  debugger;
+const Restaurant = ({restaurant, reviews, users}) => {
+  console.log(users)
   const { id, name, menu } = restaurant;
   const [activeTab, setActiveTab] = useState('menu');
 
