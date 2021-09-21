@@ -5,10 +5,12 @@ import products from './products';
 import reviews from './reviews';
 import users from './users';
 
+
 export default combineReducers({
   order,
   restaurants,
   products,
   reviews,
-  users
+  users,
+  restaurant:{}
 });

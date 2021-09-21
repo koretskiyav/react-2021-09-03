@@ -6,6 +6,8 @@ const orderSelector = (state) => state.order;
 const restaurantReviews = (state,restaurant)=> restaurant.reviews;
 const reviews = (state) => state.reviews
 const user = (state, userId) => state.users[userId];
+export const selectedRestaurant = (state, restaurant)=>{state.restaurant = restaurant;
+                                                        return restaurant}
 
 export const orderProductsSelector = createSelector(
   [productsSelector, orderSelector],

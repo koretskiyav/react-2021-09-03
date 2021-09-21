@@ -7,11 +7,10 @@ import Rate from '../rate';
 import Tabs from '../tabs';
 import { connect } from 'react-redux';
 import { loadedRestaurantReviews } from '../../redux/selectors';
-
+import { selectedRestaurant } from '../../redux/selectors';
 
 
 const Restaurant = ({restaurant, reviews, users}) => {
-  console.log(users)
   const { id, name, menu } = restaurant;
   const [activeTab, setActiveTab] = useState('menu');
 
@@ -51,5 +50,6 @@ Restaurant.propTypes = {
 };
 const mapStateToProps = (state, props) => ({
   reviews: loadedRestaurantReviews(state,props.restaurant),
+  restaurant: selectedRestaurant(state, props.restaurant)
 });
 export default connect(mapStateToProps)(Restaurant);
