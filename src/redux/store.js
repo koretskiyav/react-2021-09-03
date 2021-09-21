@@ -1,11 +1,10 @@
 import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
-import logger from './middleware/logger';
-
 import reducer from './reducer';
+import adder_reviews from './middleware/adder_reviews';
 
 export default createStore(
   reducer,
-  composeWithDevTools(applyMiddleware(logger))
+  composeWithDevTools(applyMiddleware(adder_reviews))
 );
