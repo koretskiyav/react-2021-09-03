@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import cn from 'classnames';
+import {connect} from 'react-redux';
 
 import styles from './tabs.module.css';
 
