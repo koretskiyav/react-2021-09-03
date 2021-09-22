@@ -18,8 +18,10 @@ import { loadProductsPerRestaurant } from '../../redux/actions';
 const Restaurant = ({ loaded, loading, loadProductsPerRestaurant, restaurant, averageRating }) => {
   const { id, name, menu, reviews } = restaurant;
 
-  useEffect((id) => {
-    loadProductsPerRestaurant(id);
+  useEffect(() => {
+    if (!loading && !loaded[id]) {
+      loadProductsPerRestaurant(id);
+    }
   }, [loadProductsPerRestaurant]);
 
   const [activeTab, setActiveTab] = useState('menu');
@@ -30,7 +32,7 @@ const Restaurant = ({ loaded, loading, loadProductsPerRestaurant, restaurant, av
   ];
 
   if (loading) return <Loader />;
-  if (!loaded) return 'No data :(';
+  if (!loaded[id]) return 'No data :(';
 
   return (
     <div>

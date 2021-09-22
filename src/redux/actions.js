@@ -35,7 +35,8 @@ export const loadRestaurants = () => ({
 
 export const loadProductsPerRestaurant = (restId) => ({
   type: LOAD_PRODUCTS_PER_RESTAURANT,
-  CallAPI: `/api/products?id=${restId}`
+  CallAPI: `/api/products?id=${restId}`,
+  restId
 })
 
 export const loadReviews = (restId) => async (dispatch) => {

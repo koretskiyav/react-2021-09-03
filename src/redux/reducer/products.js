@@ -4,43 +4,35 @@ import { CHANGE_RESTAURANT, LOAD_PRODUCTS_PER_RESTAURANT, REQUEST, SUCCESS, FAIL
 
 const initialState = {
   loading: false,
-  loaded: false,
+  loaded: {},
   entities: {},
   error: null,
 };
 
 export default (state = initialState, action) => {
-  const { type, data, error } = action;
+  const { type, data, error, activeId, restId } = action;
 
   switch (type) {
     case LOAD_PRODUCTS_PER_RESTAURANT + REQUEST:
       return {
         ...state,
         loading: true,
-        loaded: false,
-        error: null
+        error: null,        
       }
     case LOAD_PRODUCTS_PER_RESTAURANT + SUCCESS:
       return {
         ...state,
         loading: false,
-        loaded: true,
-        entities: {...state.entities, ...arrToMap(data)}
+        entities: {...state.entities, ...arrToMap(data)},
+        loaded: restId ? {...state.loaded, [restId]: true} : {...state.loaded},
       }
     case LOAD_PRODUCTS_PER_RESTAURANT + FAILURE:
       return {
         ...state,
         loading: false,
-        loaded: false,
+        loaded: restId ? {...state.loaded, [restId]: false}: {...state.loaded},
         error: error
       }
-    case CHANGE_RESTAURANT:
-      return {
-        ...state,
-        loading: false,
-        loaded: false,
-        error: null
-      };
     default:
       return state;
   }
