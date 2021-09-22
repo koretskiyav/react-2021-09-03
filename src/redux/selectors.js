@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 
 const restaurantsSelector = (state) => state.restaurants.entities;
-const productsSelector = (state) => state.products;
+const productsSelector = (state) => state.products.entities;
 const orderSelector = (state) => state.order;
 const reviewsSelector = (state) => state.reviews;
 const usersSelector = (state) => state.users;
@@ -9,6 +9,9 @@ const usersSelector = (state) => state.users;
 export const activeRestaurantIdSelector = (state) => state.restaurants.activeId;
 export const restaurantsLoadingSelector = (state) => state.restaurants.loading;
 export const restaurantsLoadedSelector = (state) => state.restaurants.loaded;
+
+export const productsLoadedSelector = (state) => state.products.loaded;
+export const productsLoadingSelector = (state) => state.products.loading;
 
 export const restaurantsListSelector = createSelector(
   restaurantsSelector,
