@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import styles from './basket.module.css';
 import itemStyles from './basket-item/basket-item.module.css';
@@ -7,6 +8,7 @@ import Button from '../button';
 import { orderProductsSelector, totalSelector } from '../../redux/selectors';
 
 function Basket({ title = 'Basket', total, orderProducts }) {
+
   if (!total) {
     return (
       <div className={styles.basket}>
@@ -47,6 +49,20 @@ const mapStateToProps = (state) => {
     total: totalSelector(state),
     orderProducts: orderProductsSelector(state),
   };
+};
+
+Basket.propTypes = {
+  title: PropTypes.string,
+  total: PropTypes.number.isRequired,
+  orderProducts: PropTypes.arrayOf(
+    PropTypes.shape({
+      product: PropTypes.shape({
+        id: PropTypes.string.isRequired
+      }).isRequired,
+      amount: PropTypes.number.isRequired,
+      subtotal: PropTypes.number.isRequired
+    })
+  ).isRequired
 };
 
 export default connect(mapStateToProps)(Basket);

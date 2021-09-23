@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import cn from 'classnames';
 import { increment, decrement, remove } from '../../../redux/actions';
 import Button from '../../button';
@@ -12,6 +13,7 @@ function BasketItem({
   decrement,
   remove,
 }) {
+
   return (
     <div className={styles.basketItem}>
       <div className={styles.name}>
@@ -35,5 +37,18 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   decrement: () => dispatch(decrement(ownProps.product.id)),
   remove: () => dispatch(remove(ownProps.product.id)),
 });
+
+BasketItem.propTypes = {
+  product: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired
+  }).isRequired,
+  amount: PropTypes.number.isRequired ,
+  subtotal: PropTypes.number.isRequired,
+  // From REDUX::
+  increment: PropTypes.func.isRequired,
+  decrement: PropTypes.func.isRequired,
+  remove: PropTypes.func.isRequired
+};
 
 export default connect(null, mapDispatchToProps)(BasketItem);

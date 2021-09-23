@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import styles from './product.module.css';
@@ -6,10 +5,7 @@ import Button from '../button';
 import { decrement, increment } from '../../redux/actions';
 import { amountSelector, productSelector } from '../../redux/selectors';
 
-function Product({ product, amount, decrement, increment, fetchData }) {
-  useEffect(() => {
-    fetchData && fetchData(product.id);
-  }, []); // eslint-disable-line
+function Product({ product, amount, decrement, increment }) {
 
   return (
     <div className={styles.product} data-id="product">
@@ -43,32 +39,26 @@ function Product({ product, amount, decrement, increment, fetchData }) {
   );
 }
 
+const mapStateToProps = (state, props) => ({
+  amount: amountSelector(state, props),
+  product: productSelector(state, props),
+});
+
+const mapDispatchToProps = (dispatch, props) => ({
+  increment: () => dispatch(increment(props.id)),
+  decrement: () => dispatch(decrement(props.id)),
+});
+
 Product.propTypes = {
   product: PropTypes.shape({
     name: PropTypes.string,
     price: PropTypes.number,
     ingredients: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   }).isRequired,
-  fetchData: PropTypes.func,
-  // from connect
+  // From REDUX
   amount: PropTypes.number,
   increment: PropTypes.func,
   decrement: PropTypes.func,
 };
-
-const mapStateToProps = (state, props) => ({
-  amount: amountSelector(state, props),
-  product: productSelector(state, props),
-});
-
-// const mapDispatchToProps = {
-//   increment,
-//   decrement,
-// };
-
-const mapDispatchToProps = (dispatch, props) => ({
-  increment: () => dispatch(increment(props.id)),
-  decrement: () => dispatch(decrement(props.id)),
-});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Product);

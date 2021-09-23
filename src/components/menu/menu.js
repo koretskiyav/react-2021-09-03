@@ -43,3 +43,14 @@ const mapDispatchToProps = (dispatch, props) => ({
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Menu);
+
+Menu.propTypes = {
+  menu: PropTypes.array.isRequired,
+  restId: PropTypes.string.isRequired,
+  // From REDUX:
+  loading: PropTypes.bool.isRequired,
+  loaded: PropTypes.objectOf(
+    PropTypes.bool.isRequired
+  ).isRequired,
+  loadProductsPerRestaurant: PropTypes.func.isRequired
+}
