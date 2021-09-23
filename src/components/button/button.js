@@ -22,6 +22,7 @@ const Button = ({
   block = false,
   ...props
 }) => {
+
   const Icon = icons[icon];
   return (
     <button
@@ -41,6 +42,7 @@ const Button = ({
 
 Button.propTypes = {
   icon: PropTypes.string,
+  children: PropTypes.string,
   primary: PropTypes.bool,
   secondary: PropTypes.bool,
   small: PropTypes.bool,

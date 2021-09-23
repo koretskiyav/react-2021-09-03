@@ -24,12 +24,6 @@ const Review = ({ user, text, rating }) => (
   </div>
 );
 
-Review.propTypes = {
-  user: PropTypes.string,
-  text: PropTypes.string,
-  rating: PropTypes.number.isRequired,
-};
-
 Review.defaultProps = {
   user: 'Anonymous',
 };
@@ -41,5 +35,14 @@ Review.defaultProps = {
 // const mapStateToProps = (state, props) => reviewWitUserSelector(state, props);
 
 const mapStateToProps = reviewWitUserSelector;
+
+Review.propTypes = {
+  // From REDUX
+  user: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+  userId: PropTypes.string.isRequired,
+  text: PropTypes.string.isRequired,
+  rating: PropTypes.number.isRequired,
+};
 
 export default connect(mapStateToProps)(Review);
