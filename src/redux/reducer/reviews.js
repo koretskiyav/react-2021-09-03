@@ -1,7 +1,6 @@
 import produce from 'immer';
 
 import { ADD_REVIEW, LOAD_REVIEWS, REQUEST, SUCCESS, FAILURE } from '../constants';
-import { arrToMap } from '../utils';
 
 const initialState = {
   loaded: {},
@@ -25,11 +24,7 @@ export default produce((draft = initialState, action) => {
     case LOAD_REVIEWS + SUCCESS:
       draft.loading = false;
       draft.loaded[restId] = true ;
-
-      const newReviewsData = {...arrToMap(data)};
-      for (const item in newReviewsData) {
-        draft.entities[item] = newReviewsData[item];
-      }
+      data.map(item => draft.entities[item.id] = item);
       break;
     case LOAD_REVIEWS + FAILURE:
       draft.loading = false;

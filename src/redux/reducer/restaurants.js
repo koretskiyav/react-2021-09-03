@@ -7,7 +7,6 @@ import {
   REQUEST,
   SUCCESS,
 } from '../constants';
-import { arrToMap } from '../utils';
 
 const initialState = {
   activeId: null,
@@ -17,39 +16,33 @@ const initialState = {
   error: null,
 };
 
-export default (state = initialState, action) => {
+export default produce((draft = initialState, action) => {
   const { type, restId, reviewId, activeId, data, error } = action;
 
   switch (type) {
     case LOAD_RESTAURANTS + REQUEST:
-      return {
-        ...state,
-        loading: true,
-        loaded: false,
-        error: null,
-      };
+      draft.loading = true;
+      draft.loaded = false;
+      draft.error = null;
+      break;
     case LOAD_RESTAURANTS + SUCCESS:
-      return {
-        ...state,
-        activeId: data[0].id,
-        entities: arrToMap(data),
-        loading: false,
-        loaded: true,
-      };
+      draft.activeId = data[0].id;
+      draft.loading = false;
+      draft.loaded = true;
+      data.map((item) => draft.entities[item.id] = item);
+      break;
     case LOAD_RESTAURANTS + FAILURE:
-      return {
-        ...state,
-        loading: false,
-        loaded: false,
-        error,
-      };
+      draft.loading = false;
+      draft.loaded = false;
+      draft.error = error;
+      break;
     case CHANGE_RESTAURANT:
-      return { ...state, activeId };
+      draft.activeId = activeId;
+      break;
     case ADD_REVIEW:
-      return produce(state, (draft) => {
-        draft.entities[restId].reviews.push(reviewId);
-      });
+      draft.entities[restId].reviews.push(reviewId);
+      break;
     default:
-      return state;
+      return draft;
   }
-};
+});

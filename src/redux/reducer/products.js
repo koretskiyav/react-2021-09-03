@@ -1,4 +1,4 @@
-import { arrToMap } from '../utils';
+import produce from 'immer';
 import { LOAD_PRODUCTS_PER_RESTAURANT, REQUEST, SUCCESS, FAILURE } from '../constants';
 
 const initialState = {
@@ -8,31 +8,24 @@ const initialState = {
   error: null,
 };
 
-export default (state = initialState, action) => {
+export default produce((draft = initialState, action) => {
   const { type, data, error, restId } = action;
 
   switch (type) {
     case LOAD_PRODUCTS_PER_RESTAURANT + REQUEST:
-      return {
-        ...state,
-        loading: true,
-        error: null,        
-      }
+      draft.loading = true;
+      draft.error = null;
+      break;
     case LOAD_PRODUCTS_PER_RESTAURANT + SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        entities: {...state.entities, ...arrToMap(data)},
-        loaded: restId ? {...state.loaded, [restId]: true} : {...state.loaded},
-      }
+      draft.loading = false;
+      data.map(item => draft.entities[item.id] = item);
+      if (restId) draft.loaded[restId] = true;
+      break;
     case LOAD_PRODUCTS_PER_RESTAURANT + FAILURE:
-      return {
-        ...state,
-        loading: false,
-        loaded: restId ? {...state.loaded, [restId]: false}: {...state.loaded},
-        error: error
-      }
+      draft.loading = false;
+      draft.error = error;
+      break;
     default:
-      return state;
+      return draft;
   }
-};
+});
