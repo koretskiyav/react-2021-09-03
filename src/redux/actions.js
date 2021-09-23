@@ -54,3 +54,16 @@ export const loadReviews = (restId) => async (dispatch) => {
     dispatch({ type: LOAD_REVIEWS + FAILURE, restId, error });
   }
 };
+
+export const loadUsers = () => async (dispatch) => {
+  dispatch({ type: LOAD_REVIEWS + REQUEST });
+
+  try {
+    const data = await fetch('/api/users').then((res) =>
+      res.json()
+    );
+    dispatch({ type: LOAD_REVIEWS + SUCCESS, data });
+  } catch (error) {
+    dispatch({ type: LOAD_REVIEWS + FAILURE, error });
+  }
+};
