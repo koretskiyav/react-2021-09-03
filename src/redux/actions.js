@@ -2,10 +2,15 @@ import {
   DECREMENT,
   INCREMENT,
   REMOVE,
-  ADD_REVIEW,
+
   LOAD_RESTAURANTS,
   CHANGE_RESTAURANT,
+
+  ADD_REVIEW,
   LOAD_REVIEWS,
+
+  LOAD_PRODUCTS,
+
   REQUEST,
   SUCCESS,
   FAILURE,
@@ -18,6 +23,11 @@ export const remove = (id) => ({ type: REMOVE, id });
 export const changeRestaurant = (activeId) => ({
   type: CHANGE_RESTAURANT,
   activeId,
+});
+
+export const loadProductsForRestaurant = (restaurantId) => ({
+  type: LOAD_PRODUCTS,
+  CallAPI: `/api/products?id=${restaurantId}`
 });
 
 export const addReview = (review, restId) => ({
@@ -42,5 +52,18 @@ export const loadReviews = (restId) => async (dispatch) => {
     dispatch({ type: LOAD_REVIEWS + SUCCESS, restId, data });
   } catch (error) {
     dispatch({ type: LOAD_REVIEWS + FAILURE, restId, error });
+  }
+};
+
+export const loadUsers = () => async (dispatch) => {
+  dispatch({ type: LOAD_REVIEWS + REQUEST });
+
+  try {
+    const data = await fetch('/api/users').then((res) =>
+      res.json()
+    );
+    dispatch({ type: LOAD_REVIEWS + SUCCESS, data });
+  } catch (error) {
+    dispatch({ type: LOAD_REVIEWS + FAILURE, error });
   }
 };
