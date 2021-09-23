@@ -6,6 +6,7 @@ import {
   LOAD_RESTAURANTS,
   CHANGE_RESTAURANT,
   LOAD_REVIEWS,
+  LOAD_USERS,
   REQUEST,
   SUCCESS,
   FAILURE,
@@ -51,3 +52,14 @@ export const loadReviews = (restId) => async (dispatch) => {
     dispatch({ type: LOAD_REVIEWS + FAILURE, restId, error });
   }
 };
+
+export const loadUsers = () => async (dispatch) => {
+  dispatch({type: LOAD_USERS + REQUEST});
+
+  try {
+    const data = await fetch(`/api/users`).then(res => res.json());
+    dispatch({type: LOAD_USERS + SUCCESS, data});
+  } catch (error) {
+    dispatch({type: LOAD_USERS + FAILURE, error});
+  }
+}

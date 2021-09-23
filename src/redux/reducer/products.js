@@ -1,6 +1,5 @@
-// import { normalizedProducts } from '../../fixtures';
 import { arrToMap } from '../utils';
-import { CHANGE_RESTAURANT, LOAD_PRODUCTS_PER_RESTAURANT, REQUEST, SUCCESS, FAILURE } from '../constants';
+import { LOAD_PRODUCTS_PER_RESTAURANT, REQUEST, SUCCESS, FAILURE } from '../constants';
 
 const initialState = {
   loading: false,
@@ -10,7 +9,7 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
-  const { type, data, error, activeId, restId } = action;
+  const { type, data, error, restId } = action;
 
   switch (type) {
     case LOAD_PRODUCTS_PER_RESTAURANT + REQUEST:

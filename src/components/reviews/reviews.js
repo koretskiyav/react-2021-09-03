@@ -3,14 +3,25 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Review from './review';
 import ReviewForm from './review-form';
+import Loader from '../loader';
 import styles from './reviews.module.css';
 
-import { loadReviews } from '../../redux/actions';
+import { loadReviews, loadUsers } from '../../redux/actions';
+import { usersLoadedSelector, usersLoadingSelector, reviewsLoadedSelector, reviewsLoadingSelector } from '../../redux/selectors';
 
-const Reviews = ({ reviews, restId, loadReviews }) => {
+const Reviews = ({ revLoading, revLoaded, usersLoaded, usersLoading, reviews, restId, loadReviews, loadUsers }) => {
   useEffect(() => {
-    loadReviews(restId);
-  }, [restId, loadReviews]);
+    if (!revLoaded[restId] && !revLoading) loadReviews(restId);
+  }, [revLoaded, restId, revLoading, loadReviews]);
+
+  useEffect(() => {
+    if (!usersLoaded && !usersLoading) loadUsers();
+  }, [usersLoaded, usersLoading, loadUsers])
+
+
+  // (!loading && !loaded[id])
+  if (revLoading || usersLoading) return <Loader />;
+  if (!revLoaded[restId] || !usersLoaded) return 'No data :(';
 
   return (
     <div className={styles.reviews}>
@@ -29,6 +40,14 @@ Reviews.propTypes = {
 
 const mapDispatchToProps = {
   loadReviews,
+  loadUsers
 };
 
-export default connect(null, mapDispatchToProps)(Reviews);
+const mapStateToProps = (state) => ({
+  revLoaded: reviewsLoadedSelector(state),
+  revLoading: reviewsLoadingSelector(state),
+  usersLoaded: usersLoadedSelector(state),
+  usersLoading: usersLoadingSelector(state)
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Reviews);
