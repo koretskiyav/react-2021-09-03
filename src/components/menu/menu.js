@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { productLoadedSelector, productLoadingSelector } from '../../redux/selectors';
 import { loadProductsForRestaurant } from '../../redux/actions';
 import PropTypes from 'prop-types';
+import Loader from '../loader';
 
 import Product from '../product';
 import Basket from '../basket';
@@ -12,10 +13,13 @@ import styles from './menu.module.css';
 export const Menu = ({ menu, loading, loaded, loadProductsForRestaurant, restaurantId }) => {
 
   useEffect(() => {
-    if (!loading && !loaded[restaurantId]) {
+    if (!loading && !loaded) {
       loadProductsForRestaurant(restaurantId);
     }
   }, [loading, loaded, restaurantId, loadProductsForRestaurant]);
+
+  if (loading) return <Loader />;
+  if (!loaded) return 'No data :(';
 
   return (
     <div className={styles.menu}>
