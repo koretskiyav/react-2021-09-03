@@ -6,10 +6,15 @@ import {
   LOAD_RESTAURANTS,
   CHANGE_RESTAURANT,
   LOAD_REVIEWS,
+  LOAD_PRODUCTS,
   REQUEST,
   SUCCESS,
   FAILURE,
+  LOAD_USERS,
 } from './constants';
+
+
+import { checkProductsRestaurantsSelector, checkReviewsRestaurantsSelector } from './selectors';
 
 export const increment = (id) => ({ type: INCREMENT, id });
 export const decrement = (id) => ({ type: DECREMENT, id });
@@ -27,20 +32,46 @@ export const addReview = (review, restId) => ({
   generateId: ['reviewId', 'userId'],
 });
 
-export const loadRestaurants = () => ({
-  type: LOAD_RESTAURANTS,
-  CallAPI: '/api/restaurants',
-});
 
-export const loadReviews = (restId) => async (dispatch) => {
-  dispatch({ type: LOAD_REVIEWS + REQUEST, restId });
 
+export const loadMainInfo = () => async (dispatch) => {
+  debugger;
+  dispatch({ type: LOAD_RESTAURANTS + REQUEST });
   try {
-    const data = await fetch(`/api/reviews?id=${restId}`).then((res) =>
-      res.json()
-    );
-    dispatch({ type: LOAD_REVIEWS + SUCCESS, restId, data });
+    const dataRestaurants = await fetch('/api/restaurants').then((res) => res.json());
+    dispatch({ type: LOAD_RESTAURANTS + SUCCESS, data: dataRestaurants });
+    const dataUsers = await fetch('/api/users').then((res) => res.json());
+    dispatch({ type: LOAD_USERS + SUCCESS, data: dataUsers });
   } catch (error) {
-    dispatch({ type: LOAD_REVIEWS + FAILURE, restId, error });
+    dispatch({ type: LOAD_RESTAURANTS + FAILURE, error });
   }
 };
+
+
+
+export const loadProducts = (restId) => async (dispatch, getState) => {
+  if (!checkProductsRestaurantsSelector(getState(), { id: restId })) {
+    dispatch({ type: LOAD_PRODUCTS + REQUEST, restId });
+    try {
+      const dataProducts = await fetch(`/api/products?id=${restId}`).then((res) => res.json());
+      dispatch({ type: LOAD_PRODUCTS + SUCCESS, restId, data: dataProducts });
+
+    } catch (error) {
+      dispatch({ type: LOAD_PRODUCTS + FAILURE, restId, error });
+    }
+  }
+};
+
+
+export const loadReviews = (restId) => async (dispatch, getState) => {
+  if (!checkReviewsRestaurantsSelector(getState(), { id: restId })) {
+    dispatch({ type: LOAD_REVIEWS + REQUEST, restId });
+    try {
+      const dataReviews = await fetch(`/api/reviews?id=${restId}`).then((res) => res.json());
+      dispatch({ type: LOAD_REVIEWS + SUCCESS, restId, data: dataReviews });
+    } catch (error) {
+      dispatch({ type: LOAD_REVIEWS + FAILURE, restId, error });
+    }
+  }
+};
+

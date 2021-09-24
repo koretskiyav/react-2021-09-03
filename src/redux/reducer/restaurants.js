@@ -44,7 +44,9 @@ export default (state = initialState, action) => {
         error,
       };
     case CHANGE_RESTAURANT:
-      return { ...state, activeId };
+      return produce(state, (draft) => {
+        draft.activeId = activeId;
+      });
     case ADD_REVIEW:
       return produce(state, (draft) => {
         draft.entities[restId].reviews.push(reviewId);

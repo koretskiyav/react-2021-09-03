@@ -10,18 +10,19 @@ import {
   restaurantsLoadingSelector,
   restaurantsLoadedSelector,
 } from '../../redux/selectors';
-import { loadRestaurants, changeRestaurant } from '../../redux/actions';
+import { loadMainInfo, changeRestaurant } from '../../redux/actions';
 function Restaurants({
   restaurants,
   activeId,
   loading,
   loaded,
-  loadRestaurants,
+  loadMainInfo,
   changeRestaurant,
 }) {
+
   useEffect(() => {
-    if (!loading && !loaded) loadRestaurants();
-  }, [loading, loaded, loadRestaurants]);
+    if (!loading && !loaded) loadMainInfo();
+  }, [loading, loaded, loadMainInfo]);
 
   const tabs = useMemo(
     () => restaurants.map(({ id, name }) => ({ id, label: name })),
@@ -29,7 +30,7 @@ function Restaurants({
   );
 
   if (loading) return <Loader />;
-  if (!loaded) return 'No data :(';
+  if (!loaded) return 'No data restaurants :(';
 
   return (
     <div>
@@ -55,8 +56,9 @@ const mapStateToProps = (state) => ({
   loaded: restaurantsLoadedSelector(state),
 });
 
+
 const mapDispatchToProps = {
-  loadRestaurants,
+  loadMainInfo,
   changeRestaurant,
 };
 
