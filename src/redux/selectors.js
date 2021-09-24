@@ -9,8 +9,16 @@ const reviewsSelector = (state) => state.reviews;
 const orderSelector = (state) => state.order;
 
 export const loadedReviewRestaurantsSelector = (state) => state.reviews.loadedRestaurants;
+export const checkReviewsRestaurantsSelector = (state, { id }) => (state.reviews.loadedRestaurants.indexOf(id) >= 0);
 export const reviewsLoadingSelector = (state) => state.reviews.loading;
 export const reviewsLoadedSelector = (state) => state.reviews.loaded;
+
+
+export const checkProductsRestaurantsSelector = (state, { id }) => (state.products.loadedRestaurants.indexOf(id) >= 0);
+export const productsLoadingSelector = (state) => state.products.loading;
+export const productsLoadedSelector = (state) => state.products.loaded;
+
+
 
 
 export const usersLoadingSelector = (state) => state.users.loading;
@@ -21,9 +29,6 @@ export const activeRestaurantIdSelector = (state) => state.restaurants.activeId;
 export const restaurantsLoadingSelector = (state) => state.restaurants.loading;
 export const restaurantsLoadedSelector = (state) => state.restaurants.loaded;
 
-export const loadedProductsRestaurantsSelector = (state) => state.products.loadedRestaurants;
-export const productsLoadingSelector = (state) => state.products.loading;
-export const productsLoadedSelector = (state) => state.products.loaded;
 
 
 

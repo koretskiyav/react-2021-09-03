@@ -13,6 +13,9 @@ import {
   LOAD_USERS,
 } from './constants';
 
+
+import { checkProductsRestaurantsSelector } from './selectors';
+
 export const increment = (id) => ({ type: INCREMENT, id });
 export const decrement = (id) => ({ type: DECREMENT, id });
 export const remove = (id) => ({ type: REMOVE, id });
@@ -29,12 +32,19 @@ export const addReview = (review, restId) => ({
   generateId: ['reviewId', 'userId'],
 });
 
-export const loadRestaurants = () => ({
-  type: LOAD_RESTAURANTS,
-  CallAPI: '/api/restaurants',
-});
 
 
+export const loadMainInfo = () => async (dispatch) => {
+  dispatch({ type: LOAD_RESTAURANTS + REQUEST });
+  try {
+    const dataRestaurants = await fetch('/api/restaurants').then((res) => res.json());
+    dispatch({ type: LOAD_RESTAURANTS + SUCCESS, data: dataRestaurants });
+    const dataUsers = await fetch('/api/users').then((res) => res.json());
+    dispatch({ type: LOAD_USERS + SUCCESS, data: dataUsers });
+  } catch (error) {
+    dispatch({ type: LOAD_RESTAURANTS + FAILURE, error });
+  }
+};
 
 
 export const loadReviews = (restId) => async (dispatch) => {
@@ -51,24 +61,18 @@ export const loadReviews = (restId) => async (dispatch) => {
 };
 
 
-export const loadProducts = (restId) => async (dispatch) => {
-  dispatch({ type: LOAD_PRODUCTS + REQUEST, restId });
-  try {
-    const data = await fetch(`/api/products?id=${restId}`).then((res) =>
-      res.json()
-    );
-    dispatch({ type: LOAD_PRODUCTS + SUCCESS, restId, data });
-  } catch (error) {
-    dispatch({ type: LOAD_PRODUCTS + FAILURE, restId, error });
+export const loadProducts = (restId) => async (dispatch, getState) => {
+  if (!checkProductsRestaurantsSelector(getState(), { id: restId })) {
+    dispatch({ type: LOAD_PRODUCTS + REQUEST, restId });
+    try {
+      const data = await fetch(`/api/products?id=${restId}`).then((res) =>
+        res.json()
+      );
+      dispatch({ type: LOAD_PRODUCTS + SUCCESS, restId, data });
+    } catch (error) {
+      dispatch({ type: LOAD_PRODUCTS + FAILURE, restId, error });
+    }
   }
 };
 
-export const loadUsers = () => async (dispatch) => {
-  dispatch({ type: LOAD_USERS + REQUEST });
-  try {
-    const data = await fetch("/api/users").then((res) => res.json());
-    dispatch({ type: LOAD_USERS + SUCCESS, data });
-  } catch (error) {
-    dispatch({ type: LOAD_USERS + FAILURE, error });
-  }
-};
+

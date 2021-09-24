@@ -7,31 +7,34 @@ import Banner from '../banner';
 import Rate from '../rate';
 import Tabs from '../tabs';
 import Loader from '../loader';
+import { loadProducts } from '../../redux/actions';
 import {
   averageRatingSelector,
   restaurantSelector,
-  usersLoadedSelector,
-  usersLoadingSelector,
+  productsLoadingSelector, productsLoadedSelector
 } from '../../redux/selectors';
 
-import { loadUsers } from '../../redux/actions';
 
-const Restaurant = ({ restaurant, averageRating, loadUsersAction, loaded, loading }) => {
+
+
+
+const Restaurant = ({ restaurant, averageRating, loading, loaded, loadProductsAction }) => {
   const { id, name, menu, reviews } = restaurant;
   const [activeTab, setActiveTab] = useState('menu');
 
   useEffect(() => {
-    if (!loading && !loaded) loadUsersAction();
-  }, [loading, loaded, loadUsersAction]);
+    loadProductsAction(id);
+  }, [id, loading, loaded, loadProductsAction]);
 
+  if (loading) return <Loader />;
+  if (!loaded) return 'No data :(';
 
   const tabs = [
     { id: 'menu', label: 'Menu' },
     { id: 'reviews', label: 'Reviews' },
   ];
 
-  if (loading) return <Loader />;
-  if (!loaded) return 'No data :(';
+
 
   return (
     <div>
@@ -58,14 +61,13 @@ Restaurant.propTypes = {
 const mapStateToProps = (state, props) => ({
   restaurant: restaurantSelector(state, props),
   averageRating: averageRatingSelector(state, props),
-  loading: usersLoadingSelector(state),
-  loaded: usersLoadedSelector(state),
+  loading: productsLoadingSelector(state, props),
+  loaded: productsLoadedSelector(state, props),
 });
 
 
-const mapDispatchToProps = (dispatch, props) => ({
-  loadUsersAction: () => dispatch(loadUsers()),
+const mapDispatchToProps = (dispatch) => ({
+  loadProductsAction: (id) => dispatch(loadProducts(id)),
 });
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(Restaurant);
