@@ -19,6 +19,7 @@ function Restaurants({
   loadMainInfo,
   changeRestaurant,
 }) {
+
   useEffect(() => {
     if (!loading && !loaded) loadMainInfo();
   }, [loading, loaded, loadMainInfo]);
@@ -29,7 +30,7 @@ function Restaurants({
   );
 
   if (loading) return <Loader />;
-  if (!loaded) return 'No data :(';
+  if (!loaded) return 'No data restaurants :(';
 
   return (
     <div>
@@ -55,8 +56,8 @@ const mapStateToProps = (state) => ({
   loaded: restaurantsLoadedSelector(state),
 });
 
+
 const mapDispatchToProps = {
-  //loadRestaurants,
   loadMainInfo,
   changeRestaurant,
 };

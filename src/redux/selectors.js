@@ -3,7 +3,7 @@ import { createSelector } from 'reselect';
 const restaurantsSelector = (state) => state.restaurants.entities;
 const productsSelector = (state) => state.products.entities;
 const usersSelector = (state) => state.users.entities;
-const reviewsSelector = (state) => state.reviews;
+const reviewsSelector = (state) => state.reviews.entities;
 
 
 const orderSelector = (state) => state.order;
@@ -70,7 +70,8 @@ export const reviewWitUserSelector = createSelector(
   usersSelector,
   (review, users) => ({
     ...review,
-    user: users[review.userId]?.name,
+    /* При переходе по ссылка ресторнаов с активным табом отзывов */
+    user: users[review?.userId]?.name,
   })
 );
 
@@ -78,7 +79,8 @@ export const averageRatingSelector = createSelector(
   reviewsSelector,
   restaurantSelector,
   (reviews, restaurant) => {
-    const ratings = restaurant.reviews.map((id) => reviews[id].rating);
+    /* Так и не смог решить вопрос с опережающим расчетом среднего */
+    const ratings = restaurant.reviews.map((id) => reviews[id]?.rating);
     return Math.round(
       ratings.reduce((acc, rating) => acc + rating) / ratings.length
     );

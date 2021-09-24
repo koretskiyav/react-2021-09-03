@@ -14,7 +14,7 @@ import {
 } from './constants';
 
 
-import { checkProductsRestaurantsSelector } from './selectors';
+import { checkProductsRestaurantsSelector, checkReviewsRestaurantsSelector } from './selectors';
 
 export const increment = (id) => ({ type: INCREMENT, id });
 export const decrement = (id) => ({ type: DECREMENT, id });
@@ -35,6 +35,7 @@ export const addReview = (review, restId) => ({
 
 
 export const loadMainInfo = () => async (dispatch) => {
+  debugger;
   dispatch({ type: LOAD_RESTAURANTS + REQUEST });
   try {
     const dataRestaurants = await fetch('/api/restaurants').then((res) => res.json());
@@ -47,32 +48,30 @@ export const loadMainInfo = () => async (dispatch) => {
 };
 
 
-export const loadReviews = (restId) => async (dispatch) => {
-  dispatch({ type: LOAD_REVIEWS + REQUEST, restId });
-
-  try {
-    const data = await fetch(`/api/reviews?id=${restId}`).then((res) =>
-      res.json()
-    );
-    dispatch({ type: LOAD_REVIEWS + SUCCESS, restId, data });
-  } catch (error) {
-    dispatch({ type: LOAD_REVIEWS + FAILURE, restId, error });
-  }
-};
-
 
 export const loadProducts = (restId) => async (dispatch, getState) => {
   if (!checkProductsRestaurantsSelector(getState(), { id: restId })) {
     dispatch({ type: LOAD_PRODUCTS + REQUEST, restId });
     try {
-      const data = await fetch(`/api/products?id=${restId}`).then((res) =>
-        res.json()
-      );
-      dispatch({ type: LOAD_PRODUCTS + SUCCESS, restId, data });
+      const dataProducts = await fetch(`/api/products?id=${restId}`).then((res) => res.json());
+      dispatch({ type: LOAD_PRODUCTS + SUCCESS, restId, data: dataProducts });
+
     } catch (error) {
       dispatch({ type: LOAD_PRODUCTS + FAILURE, restId, error });
     }
   }
 };
 
+
+export const loadReviews = (restId) => async (dispatch, getState) => {
+  if (!checkReviewsRestaurantsSelector(getState(), { id: restId })) {
+    dispatch({ type: LOAD_REVIEWS + REQUEST, restId });
+    try {
+      const dataReviews = await fetch(`/api/reviews?id=${restId}`).then((res) => res.json());
+      dispatch({ type: LOAD_REVIEWS + SUCCESS, restId, data: dataReviews });
+    } catch (error) {
+      dispatch({ type: LOAD_REVIEWS + FAILURE, restId, error });
+    }
+  }
+};
 
