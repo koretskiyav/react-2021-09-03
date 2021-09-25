@@ -1,19 +1,21 @@
 import PropTypes from 'prop-types';
-import cn from 'classnames';
+import { useParams } from 'react-router';
 
 import styles from './tabs.module.css';
+import { NavLink } from 'react-router-dom';
 
 function Tabs({ tabs, activeId, onChange }) {
+  const {restId} = useParams();
   return (
     <div className={styles.tabs}>
       {tabs.map(({ id, label }) => (
-        <span
+        <NavLink to={`/restaurants/${restId}/${id}`}
           key={id}
-          className={cn(styles.tab, { [styles.active]: id === activeId })}
-          onClick={() => onChange(id)}
+          className={styles.tab}
+          activeClassName={styles.active}
         >
           {label}
-        </span>
+        </NavLink>
       ))}
     </div>
   );

@@ -72,3 +72,7 @@
 .info p:first-child {
   font-weight: bold;
 }
+
+.hover:hover {
+  text-decoration: underline;
+}
