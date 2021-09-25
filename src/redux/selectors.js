@@ -28,22 +28,29 @@ export const restaurantsListSelector = createSelector(
   Object.values
 );
 
+export const productsWithRestaurantIdSelector = createSelector([restaurantsSelector], restaurants => (
+  Object.keys(restaurants).reduce((result, restId) => (
+    {...result, ...restaurants[restId].menu.reduce((res, item) => ({...res, [item]: restId}), {})}
+  ), {}))
+)
+
 export const restaurantSelector = (state, { id }) =>
   restaurantsSelector(state)[id];
 export const productSelector = (state, { id }) => productsSelector(state)[id];
 export const reviewSelector = (state, { id }) => reviewsSelector(state)[id];
 export const amountSelector = (state, { id }) => orderSelector(state)[id] || 0;
 export const orderProductsSelector = createSelector(
-  [productsSelector, orderSelector],
-  (products, order) =>
-    Object.keys(order)
+  [productsSelector, orderSelector, productsWithRestaurantIdSelector],
+  (products, order, productsWithRestaurantId) => {
+    return Object.keys(order)
       .filter((productId) => order[productId] > 0)
       .map((productId) => products[productId])
       .map((product) => ({
-        product,
+        product: {...product, restId: productsWithRestaurantId[product.id]},
         amount: order[product.id],
         subtotal: order[product.id] * product.price,
-      }))
+      }));
+  }
 );
 
 export const totalSelector = createSelector(
