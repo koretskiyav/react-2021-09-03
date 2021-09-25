@@ -10,8 +10,10 @@ import {
   averageRatingSelector,
   restaurantSelector,
 } from '../../redux/selectors';
+import { Redirect, Route, Switch, useParams} from 'react-router';
 
-const Restaurant = ({ restaurant, averageRating }) => {
+const Restaurant = ({restaurant, averageRating}) => {
+  let {restId} = useParams();
   const { id, name, menu, reviews } = restaurant;
 
   const [activeTab, setActiveTab] = useState('menu');
@@ -20,15 +22,23 @@ const Restaurant = ({ restaurant, averageRating }) => {
     { id: 'menu', label: 'Menu' },
     { id: 'reviews', label: 'Reviews' },
   ];
-
   return (
     <div>
       <Banner heading={name}>
         <Rate value={averageRating} />
       </Banner>
       <Tabs tabs={tabs} activeId={activeTab} onChange={setActiveTab} />
-      {activeTab === 'menu' && <Menu menu={menu} key={id} restId={id} />}
-      {activeTab === 'reviews' && <Reviews reviews={reviews} restId={id} />}
+
+      <Switch>
+        <Route path={`/restaurants/${id}/menu`}>
+          <Menu menu={menu} key={restId} restId={restId} />
+        </Route>
+        <Route path={`/restaurants/${id}/reviews`}>
+          <Reviews reviews={reviews} restId={restId} />
+        </Route>
+        <Redirect to={`/restaurants/${id}/menu`} />
+      </Switch>
+
     </div>
   );
 };
