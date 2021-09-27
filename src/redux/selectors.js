@@ -1,3 +1,4 @@
+import { string } from 'prop-types';
 import { createSelector } from 'reselect';
 
 const restaurantsSelector = (state) => state.restaurants.entities;
@@ -71,3 +72,9 @@ export const averageRatingSelector = createSelector(
     );
   }
 );
+
+export const productBelongToRestaurantSelector = createSelector(
+  restaurantsSelector,
+  (state, props) => props.product.id,
+  (restaurants, product) => Array.from(Object.values(restaurants)).find((restaurant) => restaurant.menu.includes(product)).id
+)
