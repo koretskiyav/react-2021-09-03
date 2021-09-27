@@ -33,6 +33,14 @@ export const restaurantSelector = (state, { id }) =>
 export const productSelector = (state, { id }) => productsSelector(state)[id];
 export const reviewSelector = (state, { id }) => reviewsSelector(state)[id];
 export const amountSelector = (state, { id }) => orderSelector(state)[id] || 0;
+export const getRestaurantByProductId = (state, { id }) => restaurantsListSelector(state).find(
+  (item) => {
+    let z = id;
+    let x = item.menu.indexOf(z) >= 0;
+    return x;
+  }
+);
+
 export const orderProductsSelector = createSelector(
   [productsSelector, orderSelector],
   (products, order) =>
@@ -45,6 +53,9 @@ export const orderProductsSelector = createSelector(
         subtotal: order[product.id] * product.price,
       }))
 );
+
+
+
 
 export const totalSelector = createSelector(
   [orderProductsSelector],
