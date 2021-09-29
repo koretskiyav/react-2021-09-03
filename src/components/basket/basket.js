@@ -7,11 +7,16 @@ import './basket.css';
 import itemStyles from './basket-item/basket-item.module.css';
 import BasketItem from './basket-item';
 import Button from '../button';
-import { orderProductsSelector, totalSelector } from '../../redux/selectors';
+import { orderProductsSelector, totalSelector, checkoutOrderLoadedSelector, checkoutOrderLoadingSelector } from '../../redux/selectors';
 import { UserConsumer } from '../../contexts/user-context';
 
-function Basket({ title = 'Basket', total, orderProducts }) {
+import { checkOutOrder } from '../../redux/actions';
+import Loader from '../loader';
+
+function Basket({ title = 'Basket', total, orderProducts, checkOutOrder, loading }) {
   // const { name } = useContext(userContext);
+
+  if (loading) return <Loader />;
 
   if (!total) {
     return (
@@ -20,6 +25,8 @@ function Basket({ title = 'Basket', total, orderProducts }) {
       </div>
     );
   }
+
+
 
   return (
     <div className={styles.basket}>
@@ -52,20 +59,26 @@ function Basket({ title = 'Basket', total, orderProducts }) {
           <p>{`${total} $`}</p>
         </div>
       </div>
-      <Link to="/checkout">
-        <Button primary block>
-          checkout
-        </Button>
-      </Link>
+      {/* <Link to="/checkout"> */}
+      <Button onClick={checkOutOrder} primary block>
+        checkout
+      </Button>
+      {/* </Link> */}
     </div>
   );
 }
 
-const mapStateToProps = (state) => {
-  return {
-    total: totalSelector(state),
-    orderProducts: orderProductsSelector(state),
-  };
-};
 
-export default connect(mapStateToProps)(Basket);
+const mapStateToProps = (state, props) => ({
+  total: totalSelector(state),
+  orderProducts: orderProductsSelector(state),
+  loading: checkoutOrderLoadingSelector(state),
+  loaded: checkoutOrderLoadedSelector(state),
+
+});
+
+const mapDispatchToProps = (dispatch, props) => ({
+  checkOutOrder: () => dispatch(checkOutOrder()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Basket);

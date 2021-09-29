@@ -38,4 +38,6 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   remove: () => dispatch(remove(ownProps.product.id)),
 });
 
+
+
 export default connect(null, mapDispatchToProps)(BasketItem);
