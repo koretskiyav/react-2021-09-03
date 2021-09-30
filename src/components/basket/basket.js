@@ -9,7 +9,6 @@ import itemStyles from './basket-item/basket-item.module.css';
 import BasketItem from './basket-item';
 import Button from '../button';
 import { orderProductsSelector, totalSelector, checkoutOrderLoadedSelector, checkoutOrderLoadingSelector } from '../../redux/selectors';
-import { UserConsumer } from '../../contexts/user-context';
 import { userContext } from '../../contexts/user-context';
 import { checkOutOrder } from '../../redux/actions';
 import Loader from '../loader';

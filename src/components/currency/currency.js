@@ -5,7 +5,7 @@ import { useState } from 'react';
 
 const Currency = ({ children }) => {
   const [currency, setCurrency] = useState("RUR");
-  const currencyRates = { "RUR": 85, "EUR": 1, "USD": 0.882, };
+  const currencyRates = { "RUR": 75, "EUR": 0.8823, "USD": 1, };
   const currencyList = ["RUR", "USD", "EUR"];
   const calcPrice = (price) => Math.round(price * currencyRates[currency]);
   return (

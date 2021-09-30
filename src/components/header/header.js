@@ -17,7 +17,7 @@ const Header = () => {
       <div className={styles.currency} >
         <select id="currency" onChange={(event) => setCurrency(event.target.value)} value={currency}>
           {
-            currencyList.map((val) => <option value={val}>{val}</option>)
+            currencyList.map((val) => <option key={val} value={val}>{val}</option>)
           }
         </select>
       </div>
