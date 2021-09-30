@@ -66,3 +66,7 @@
   padding: 11px 20px;
   height: 50px;
 }
+
+.button.busy {
+  opacity: 40%;
+}

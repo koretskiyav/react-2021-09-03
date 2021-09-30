@@ -1,4 +1,4 @@
-import { replace } from 'connected-react-router';
+import { push, replace } from 'connected-react-router';
 import {
   DECREMENT,
   INCREMENT,
@@ -9,6 +9,7 @@ import {
   LOAD_PRODUCTS,
   LOAD_REVIEWS,
   LOAD_USERS,
+  SEND_ORDER,
   REQUEST,
   SUCCESS,
   FAILURE,
@@ -19,6 +20,8 @@ import {
   usersLoadedSelector,
   reviewsLoadingSelector,
   reviewsLoadedSelector,
+  orderSendingSelector,
+  orderForSendingSelector
 } from './selectors';
 
 export const increment = (id) => ({ type: INCREMENT, id });
@@ -64,6 +67,46 @@ export const loadReviews = (restId) => async (dispatch, getState) => {
     dispatch({ type: LOAD_REVIEWS + SUCCESS, restId, data });
   } catch (error) {
     dispatch({ type: LOAD_REVIEWS + FAILURE, restId, error });
+    dispatch(replace('/error'));
+  }
+};
+
+export const makeOrder = () => async (dispatch, getState) => {
+  const state = getState();
+  const sending = orderSendingSelector(state);
+  // const gotResponse = orderGotResponseSelector(state);
+
+  if (state.router.location.pathname !== '/checkout') return;
+
+  if (sending) return;
+
+  dispatch({ type: SEND_ORDER + REQUEST });
+
+  const aOrder = orderForSendingSelector(state);
+
+  try {
+    const data = await fetch(`/api/order`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(aOrder)})
+        .then((res) => {
+          return res.json();
+        })
+      if (data !== "ok") {
+        dispatch({ type: SEND_ORDER + FAILURE, error: data });
+        return dispatch(push(`/checkout/orderError`));
+      }
+      
+      
+    // Если OK, то очищать корзину и редиректить на страницу /orderSuccess
+    // Если ошибка, то редиректить на страницу ошибки и показать текст ошибки.
+    dispatch(replace('/checkout/thankyou'));
+    dispatch({ type: SEND_ORDER + SUCCESS});
+
+  } catch (error) {
+    dispatch({ type: SEND_ORDER + FAILURE, error });
     dispatch(replace('/error'));
   }
 };

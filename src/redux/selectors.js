@@ -9,6 +9,8 @@ const usersSelector = (state) => state.users.entities;
 export const activeRestaurantIdSelector = (state) => state.restaurants.activeId;
 export const restaurantsLoadingSelector = (state) => state.restaurants.loading;
 export const restaurantsLoadedSelector = (state) => state.restaurants.loaded;
+export const orderSendingSelector = (state) => state.order?.sending;
+export const orderErrorSelector = (state) => state.order.error;
 
 export const productsLoadingSelector = (state, props) =>
   state.products.loading[props.restId];
@@ -19,6 +21,13 @@ export const reviewsLoadingSelector = (state, props) =>
   state.reviews.loading[props.restId];
 export const reviewsLoadedSelector = (state, props) =>
   state.reviews.loaded[props.restId];
+
+export const orderDataSelector = createSelector(
+  [orderSelector],
+  (order) => {
+    return order?.data || {};
+  }
+);
 
 export const usersLoadingSelector = (state) => state.users.loading;
 export const usersLoadedSelector = (state) => state.users.loaded;
@@ -32,7 +41,9 @@ export const restaurantSelector = (state, { id }) =>
   restaurantsSelector(state)[id];
 export const productSelector = (state, { id }) => productsSelector(state)[id];
 export const reviewSelector = (state, { id }) => reviewsSelector(state)[id];
-export const amountSelector = (state, { id }) => orderSelector(state)[id] || 0;
+export const amountSelector = (state, { id }) => {
+  return orderDataSelector(state)[id] || 0;
+}
 
 const restaurantsIdsByProductsSelector = createSelector(
   restaurantsListSelector,
@@ -48,17 +59,29 @@ const restaurantsIdsByProductsSelector = createSelector(
 );
 
 export const orderProductsSelector = createSelector(
-  [productsSelector, orderSelector, restaurantsIdsByProductsSelector],
+  [productsSelector, orderDataSelector, restaurantsIdsByProductsSelector],
   (products, order, restaurantsIds) =>
     Object.keys(order)
       .filter((productId) => order[productId] > 0)
       .map((productId) => products[productId])
-      .map((product) => ({
-        product,
-        amount: order[product.id],
-        subtotal: order[product.id] * product.price,
-        restId: restaurantsIds[product.id],
-      }))
+      .map((product) => {
+        return ({
+          product,
+          amount: order[product.id],
+          subtotal: order[product.id] * product.price,
+          restId: restaurantsIds[product.id],
+        })
+      })
+);
+
+export const orderForSendingSelector = createSelector(
+  [orderProductsSelector],
+  (orderProducts) => (
+    orderProducts.map(orderItem => ({
+        id: orderItem.product.id,
+        amount: orderItem.amount
+    })
+  ))
 );
 
 export const totalSelector = createSelector(
