@@ -11,9 +11,11 @@ import { orderProductsSelector, orderStatusSelector, totalSelector } from '../..
 import { UserConsumer } from '../../contexts/user-context';
 import { createOrder } from '../../redux/actions';
 import Loader from '../loader/loader';
+import { useContext } from 'react';
+import convertContext from '../../contexts/convert-context';
 
 function Basket({ title = 'Basket', total, orderProducts, createOrder, pending }) {
-  // const { name } = useContext(userContext);
+   const convert = useContext(convertContext);
 
   if (!total) {
     return (
@@ -53,7 +55,7 @@ function Basket({ title = 'Basket', total, orderProducts, createOrder, pending }
           <p>Total</p>
         </div>
         <div className={itemStyles.info}>
-          <p>{`${total} $`}</p>
+          <p>{convert(total)}</p>
         </div>
       </div>
       <Link to="/checkout">

@@ -4,9 +4,12 @@ import styles from './product.module.css';
 import Button from '../button';
 import { decrement, increment } from '../../redux/actions';
 import { amountSelector, productSelector } from '../../redux/selectors';
+import convertContext from '../../contexts/convert-context';
+import { useContext } from 'react';
 
 const Product = ({ product, amount, increment, decrement }) => {
   // if (!product) return null;
+  const convert = useContext(convertContext);
 
   return (
     <div className={styles.product} data-id="product">
@@ -14,7 +17,7 @@ const Product = ({ product, amount, increment, decrement }) => {
         <div>
           <h4 className={styles.title}>{product.name}</h4>
           <p className={styles.description}>{product.ingredients.join(', ')}</p>
-          <div className={styles.price}>{product.price} $</div>
+          <div className={styles.price}>{convert(product.price)}</div>
         </div>
         <div>
           <div className={styles.counter}>
