@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
@@ -9,12 +10,13 @@ import BasketItem from './basket-item';
 import Button from '../button';
 import { orderProductsSelector, totalSelector, checkoutOrderLoadedSelector, checkoutOrderLoadingSelector } from '../../redux/selectors';
 import { UserConsumer } from '../../contexts/user-context';
-
+import { userContext } from '../../contexts/user-context';
 import { checkOutOrder } from '../../redux/actions';
 import Loader from '../loader';
+import { current } from 'immer';
 
 function Basket({ title = 'Basket', total, orderProducts, checkOutOrder, loading }) {
-  // const { name } = useContext(userContext);
+  const { currency, calcPrice } = useContext(userContext);
 
   if (loading) return <Loader />;
 
@@ -32,7 +34,7 @@ function Basket({ title = 'Basket', total, orderProducts, checkOutOrder, loading
     <div className={styles.basket}>
       {/* <h4 className={styles.title}>{`${name}'s ${title}`}</h4> */}
       <h4 className={styles.title}>
-        <UserConsumer>{({ name }) => `${name}'s ${title}`}</UserConsumer>
+        {title}
       </h4>
       <TransitionGroup>
         {orderProducts.map(({ product, amount, subtotal, restId }) => (
@@ -56,7 +58,7 @@ function Basket({ title = 'Basket', total, orderProducts, checkOutOrder, loading
           <p>Total</p>
         </div>
         <div className={itemStyles.info}>
-          <p>{`${total} $`}</p>
+          <p>{`${calcPrice(total)} ${currency}`}</p>
         </div>
       </div>
       {/* <Link to="/checkout"> */}
