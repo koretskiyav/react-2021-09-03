@@ -7,10 +7,12 @@ import './basket.css';
 import itemStyles from './basket-item/basket-item.module.css';
 import BasketItem from './basket-item';
 import Button from '../button';
-import { orderProductsSelector, totalSelector } from '../../redux/selectors';
+import { isOrderPosting, orderProductsSelector, totalSelector } from '../../redux/selectors';
 import { UserConsumer } from '../../contexts/user-context';
+import { postOrder } from '../../redux/actions';
+import Loader from '../loader';
 
-function Basket({ title = 'Basket', total, orderProducts }) {
+function Basket({ title = 'Basket', total, orderProducts, postOrder, isLoading }) {
   // const { name } = useContext(userContext);
 
   if (!total) {
@@ -32,7 +34,7 @@ function Basket({ title = 'Basket', total, orderProducts }) {
           <CSSTransition
             key={product.id}
             timeout={500}
-            classNames="basket-item"
+            classNames='basket-item'
           >
             <BasketItem
               product={product}
@@ -52,9 +54,9 @@ function Basket({ title = 'Basket', total, orderProducts }) {
           <p>{`${total} $`}</p>
         </div>
       </div>
-      <Link to="/checkout">
-        <Button primary block>
-          checkout
+      <Link to='/checkout'>
+        <Button primary block onClick={postOrder} disabled={isLoading}>
+          {isLoading ? <Loader /> : 'Checkout'}
         </Button>
       </Link>
     </div>
@@ -65,7 +67,10 @@ const mapStateToProps = (state) => {
   return {
     total: totalSelector(state),
     orderProducts: orderProductsSelector(state),
+    isLoading: isOrderPosting(state)
   };
 };
 
-export default connect(mapStateToProps)(Basket);
+const mapDispatchToProps = { postOrder };
+
+export default connect(mapStateToProps, mapDispatchToProps)(Basket);

@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 
 const restaurantsSelector = (state) => state.restaurants.entities;
 const productsSelector = (state) => state.products.entities;
-const orderSelector = (state) => state.order;
+const orderSelector = (state) => state.order.entities;
 const reviewsSelector = (state) => state.reviews.entities;
 const usersSelector = (state) => state.users.entities;
 
@@ -27,6 +27,8 @@ export const restaurantsListSelector = createSelector(
   restaurantsSelector,
   Object.values
 );
+export const isOrderPosting = state => state.order.loading;
+export const orderError = state => state.order.error;
 
 export const restaurantSelector = (state, { id }) =>
   restaurantsSelector(state)[id];
@@ -57,7 +59,7 @@ export const orderProductsSelector = createSelector(
         product,
         amount: order[product.id],
         subtotal: order[product.id] * product.price,
-        restId: restaurantsIds[product.id],
+        restId: restaurantsIds[product.id]
       }))
 );
 
@@ -72,7 +74,7 @@ export const reviewWitUserSelector = createSelector(
   usersSelector,
   (review, users) => ({
     ...review,
-    user: users[review.userId]?.name,
+    user: users[review.userId]?.name
   })
 );
 
@@ -86,3 +88,4 @@ export const averageRatingSelector = createSelector(
     );
   }
 );
+
