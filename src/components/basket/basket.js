@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
@@ -7,11 +8,16 @@ import './basket.css';
 import itemStyles from './basket-item/basket-item.module.css';
 import BasketItem from './basket-item';
 import Button from '../button';
-import { orderProductsSelector, totalSelector } from '../../redux/selectors';
-import { UserConsumer } from '../../contexts/user-context';
+import { orderProductsSelector, totalSelector, checkoutOrderLoadedSelector, checkoutOrderLoadingSelector } from '../../redux/selectors';
+import { userContext } from '../../contexts/user-context';
+import { checkOutOrder } from '../../redux/actions';
+import Loader from '../loader';
+import { current } from 'immer';
 
-function Basket({ title = 'Basket', total, orderProducts }) {
-  // const { name } = useContext(userContext);
+function Basket({ title = 'Basket', total, orderProducts, checkOutOrder, loading }) {
+  const { currency, calcPrice } = useContext(userContext);
+
+  if (loading) return <Loader />;
 
   if (!total) {
     return (
@@ -21,11 +27,13 @@ function Basket({ title = 'Basket', total, orderProducts }) {
     );
   }
 
+
+
   return (
     <div className={styles.basket}>
       {/* <h4 className={styles.title}>{`${name}'s ${title}`}</h4> */}
       <h4 className={styles.title}>
-        <UserConsumer>{({ name }) => `${name}'s ${title}`}</UserConsumer>
+        {title}
       </h4>
       <TransitionGroup>
         {orderProducts.map(({ product, amount, subtotal, restId }) => (
@@ -49,23 +57,29 @@ function Basket({ title = 'Basket', total, orderProducts }) {
           <p>Total</p>
         </div>
         <div className={itemStyles.info}>
-          <p>{`${total} $`}</p>
+          <p>{`${calcPrice(total)} ${currency}`}</p>
         </div>
       </div>
-      <Link to="/checkout">
-        <Button primary block>
-          checkout
-        </Button>
-      </Link>
+      {/* <Link to="/checkout"> */}
+      <Button onClick={checkOutOrder} primary block>
+        checkout
+      </Button>
+      {/* </Link> */}
     </div>
   );
 }
 
-const mapStateToProps = (state) => {
-  return {
-    total: totalSelector(state),
-    orderProducts: orderProductsSelector(state),
-  };
-};
 
-export default connect(mapStateToProps)(Basket);
+const mapStateToProps = (state, props) => ({
+  total: totalSelector(state),
+  orderProducts: orderProductsSelector(state),
+  loading: checkoutOrderLoadingSelector(state),
+  loaded: checkoutOrderLoadedSelector(state),
+
+});
+
+const mapDispatchToProps = (dispatch, props) => ({
+  checkOutOrder: () => dispatch(checkOutOrder()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Basket);

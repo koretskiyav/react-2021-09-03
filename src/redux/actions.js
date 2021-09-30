@@ -9,6 +9,7 @@ import {
   LOAD_PRODUCTS,
   LOAD_REVIEWS,
   LOAD_USERS,
+  CHECKOUT,
   REQUEST,
   SUCCESS,
   FAILURE,
@@ -19,6 +20,11 @@ import {
   usersLoadedSelector,
   reviewsLoadingSelector,
   reviewsLoadedSelector,
+
+  orderListSelector,
+  checkoutOrderLoadedSelector,
+  checkoutOrderLoadingSelector,
+
 } from './selectors';
 
 export const increment = (id) => ({ type: INCREMENT, id });
@@ -76,4 +82,34 @@ export const loadUsers = () => async (dispatch, getState) => {
   if (loading || loaded) return;
 
   dispatch(_loadUsers());
+};
+
+export const checkOutOrder = () => async (dispatch, getState) => {
+  const state = getState();
+  const needReplace = !((state.router?.location?.pathname || '') === '/checkout');
+  if (needReplace)
+    dispatch(replace('/checkout'));
+  else {
+
+    const loading = checkoutOrderLoadingSelector(state);
+    const loaded = checkoutOrderLoadedSelector(state);
+    if (loading || loaded) return;
+
+    dispatch({ type: CHECKOUT + REQUEST });
+    try {
+      const response = await fetch('/api/order', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(orderListSelector(state)) });
+      if (response.ok) {
+        dispatch({ type: CHECKOUT + SUCCESS });
+        dispatch(replace('/success'));
+      }
+      else {
+        const error = await response.text();
+        dispatch({ type: CHECKOUT + FAILURE, error });
+        dispatch(replace('/error'));
+      }
+    } catch (error) {
+      dispatch({ type: CHECKOUT + FAILURE, error });
+      dispatch(replace('/error'));
+    }
+  }
 };
