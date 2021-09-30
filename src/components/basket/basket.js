@@ -8,12 +8,14 @@ import itemStyles from './basket-item/basket-item.module.css';
 import BasketItem from './basket-item';
 import Button from '../button';
 import { isOrderPosting, orderProductsSelector, totalSelector } from '../../redux/selectors';
-import { UserConsumer } from '../../contexts/user-context';
 import { postOrder } from '../../redux/actions';
 import Loader from '../loader';
+import { useContext } from 'react';
+import { UserContext } from '../../contexts/user-context';
 
 function Basket({ title = 'Basket', total, orderProducts, postOrder, isLoading }) {
   // const { name } = useContext(userContext);
+  const { currencyPrice } = useContext(UserContext);
 
   if (!total) {
     return (
@@ -27,7 +29,7 @@ function Basket({ title = 'Basket', total, orderProducts, postOrder, isLoading }
     <div className={styles.basket}>
       {/* <h4 className={styles.title}>{`${name}'s ${title}`}</h4> */}
       <h4 className={styles.title}>
-        <UserConsumer>{({ name }) => `${name}'s ${title}`}</UserConsumer>
+        {/*<UserConsumer>{({ name }) => `${name}'s ${title}`}</UserConsumer>*/}
       </h4>
       <TransitionGroup>
         {orderProducts.map(({ product, amount, subtotal, restId }) => (
@@ -51,7 +53,7 @@ function Basket({ title = 'Basket', total, orderProducts, postOrder, isLoading }
           <p>Total</p>
         </div>
         <div className={itemStyles.info}>
-          <p>{`${total} $`}</p>
+          <p>{currencyPrice(total)}</p>
         </div>
       </div>
       <Link to='/checkout'>
