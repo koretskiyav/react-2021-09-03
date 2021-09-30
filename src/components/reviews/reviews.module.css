@@ -4,3 +4,13 @@
   max-width: 884px;
   width: 100%;
 }
+
+.reviewEnter {
+opacity: 0;
+}
+
+.reviewEnterActive {
+  opacity: 1;
+  transition: opacity;
+  transition-duration: 2000ms;
+}
