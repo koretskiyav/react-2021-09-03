@@ -1,4 +1,4 @@
-import { replace } from 'connected-react-router';
+import { push, replace, } from 'connected-react-router';
 import {
   DECREMENT,
   INCREMENT,
@@ -12,6 +12,8 @@ import {
   REQUEST,
   SUCCESS,
   FAILURE,
+  CREATE_ORDER,
+  ERRORPAGE_LEAVE,
 } from './constants';
 
 import {
@@ -77,3 +79,46 @@ export const loadUsers = () => async (dispatch, getState) => {
 
   dispatch(_loadUsers());
 };
+
+export const createOrder = () => async (dispatch, getState) => {
+
+  const state = getState();
+
+  if (state.router.location.pathname !== "/checkout") return;
+
+  dispatch( { type: CREATE_ORDER + REQUEST} );
+
+  const order = Object.entries(state.order.items).map(( [id, amount] ) => ( { id, amount } ));
+
+  try {
+
+    const response = await fetch(
+      '/api/order', 
+     {
+        method: 'POST', 
+        headers: { 'Content-Type': 'application/json' }, 
+        body: JSON.stringify([...order])
+      }
+    )
+
+    if (response.status === 200) {
+      dispatch( {type: CREATE_ORDER + SUCCESS } );
+      dispatch( push("/thanks") );
+      return;
+    }
+
+    const errorMessage = await response.json();
+    dispatch( { type: CREATE_ORDER + FAILURE, errorMessage });
+    dispatch( push("/error") );
+
+  }
+  catch(error) {
+    dispatch( {type: CREATE_ORDER + FAILURE } );
+    dispatch( push("/error") );
+  }
+}
+
+export const errorPageLeave = () => (dispatch) => {
+  dispatch( {type: ERRORPAGE_LEAVE} );
+ // dispatch( pop() );
+}

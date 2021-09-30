@@ -9,6 +9,7 @@ import history from './history';
 
 // DEV ONLY!!!
 window.store = store;
+console.log(history);
 
 ReactDOM.render(
   <Provider store={store}>

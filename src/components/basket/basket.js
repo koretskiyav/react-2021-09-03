@@ -7,10 +7,12 @@ import './basket.css';
 import itemStyles from './basket-item/basket-item.module.css';
 import BasketItem from './basket-item';
 import Button from '../button';
-import { orderProductsSelector, totalSelector } from '../../redux/selectors';
+import { orderProductsSelector, orderStatusSelector, totalSelector } from '../../redux/selectors';
 import { UserConsumer } from '../../contexts/user-context';
+import { createOrder } from '../../redux/actions';
+import Loader from '../loader/loader';
 
-function Basket({ title = 'Basket', total, orderProducts }) {
+function Basket({ title = 'Basket', total, orderProducts, createOrder, pending }) {
   // const { name } = useContext(userContext);
 
   if (!total) {
@@ -20,6 +22,8 @@ function Basket({ title = 'Basket', total, orderProducts }) {
       </div>
     );
   }
+
+  if (pending) return <Loader />
 
   return (
     <div className={styles.basket}>
@@ -53,7 +57,7 @@ function Basket({ title = 'Basket', total, orderProducts }) {
         </div>
       </div>
       <Link to="/checkout">
-        <Button primary block>
+        <Button onClick={createOrder} primary block>
           checkout
         </Button>
       </Link>
@@ -65,7 +69,12 @@ const mapStateToProps = (state) => {
   return {
     total: totalSelector(state),
     orderProducts: orderProductsSelector(state),
+    pending: orderStatusSelector(state),
   };
 };
 
-export default connect(mapStateToProps)(Basket);
+const mapDispatchToProps = (dispatch) => ({
+  createOrder: () => dispatch(createOrder()),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Basket);

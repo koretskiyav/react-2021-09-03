@@ -13,3 +13,7 @@ export const LOAD_USERS = 'LOAD_USERS';
 export const REQUEST = '_REQUEST';
 export const SUCCESS = '_SUCCESS';
 export const FAILURE = '_FAILURE';
+
+export const CREATE_ORDER = 'CREATE_ORDER';
+
+export const ERRORPAGE_LEAVE = "ERRORPAGE_LEAVE";
