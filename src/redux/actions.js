@@ -1,25 +1,21 @@
 import { replace } from 'connected-react-router';
 import {
-  DECREMENT,
-  INCREMENT,
-  REMOVE,
   ADD_REVIEW,
-  LOAD_RESTAURANTS,
   CHANGE_RESTAURANT,
+  DECREMENT,
+  FAILURE,
+  INCREMENT,
   LOAD_PRODUCTS,
+  LOAD_RESTAURANTS,
   LOAD_REVIEWS,
   LOAD_USERS,
+  POST_ORDER,
+  REMOVE,
   REQUEST,
-  SUCCESS,
-  FAILURE,
+  SUCCESS
 } from './constants';
 
-import {
-  usersLoadingSelector,
-  usersLoadedSelector,
-  reviewsLoadingSelector,
-  reviewsLoadedSelector,
-} from './selectors';
+import { reviewsLoadedSelector, reviewsLoadingSelector, usersLoadedSelector, usersLoadingSelector } from './selectors';
 
 export const increment = (id) => ({ type: INCREMENT, id });
 export const decrement = (id) => ({ type: DECREMENT, id });
@@ -27,24 +23,24 @@ export const remove = (id) => ({ type: REMOVE, id });
 
 export const changeRestaurant = (activeId) => ({
   type: CHANGE_RESTAURANT,
-  activeId,
+  activeId
 });
 
 export const addReview = (review, restId) => ({
   type: ADD_REVIEW,
   review,
   restId,
-  generateId: ['reviewId', 'userId'],
+  generateId: ['reviewId', 'userId']
 });
 
 export const loadRestaurants = () => ({
   type: LOAD_RESTAURANTS,
-  CallAPI: '/api/restaurants',
+  CallAPI: '/api/restaurants'
 });
 export const loadProducts = (restId) => ({
   type: LOAD_PRODUCTS,
   CallAPI: `/api/products?id=${restId}`,
-  restId,
+  restId
 });
 
 const _loadUsers = () => ({ type: LOAD_USERS, CallAPI: '/api/users' });
@@ -76,4 +72,39 @@ export const loadUsers = () => async (dispatch, getState) => {
   if (loading || loaded) return;
 
   dispatch(_loadUsers());
+};
+
+export const postOrder = () => async (dispatch, getState) => {
+  const order = getState().order.entities;
+  const location = getState().router.location;
+  const massOrder = Object.entries(order).reduce((acc, [key, value]) =>
+      [...acc, { id: key, amount: value }]
+    , []);
+  if (location.pathname !== '/checkout') return;
+
+  dispatch({ type: POST_ORDER + REQUEST });
+  try {
+    let code = 0;
+    const data = await fetch('/api/order', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(massOrder)
+    }).then((res) => {
+      code = res.status;
+      return res.json();
+    });
+
+    if (code === 200) {
+      dispatch({ type: POST_ORDER + SUCCESS, data });
+      dispatch(replace('/success'));
+    } else {
+      dispatch({ type: POST_ORDER + FAILURE, data });
+      dispatch(replace('/error'));
+    }
+
+  } catch (error) {
+    console.log(error.responce);
+    dispatch({ type: POST_ORDER + FAILURE, data: error });
+    dispatch(replace('/error'));
+  }
 };
