@@ -12,6 +12,7 @@ import {
 } from '../../redux/selectors';
 
 import Loader from '../loader';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 const Reviews = ({
   reviews,
@@ -30,9 +31,24 @@ const Reviews = ({
 
   return (
     <div className={styles.reviews}>
-      {reviews.map((id) => (
-        <Review key={id} id={id} />
-      ))}
+      <TransitionGroup>
+        {reviews.map((id) => (
+          <CSSTransition
+            key={id}
+            timeout={500}
+            classNames={{
+              enterActive: styles.review_item_enter,
+              enterDone: styles.review_item_enter_active,
+              exitActive: styles.review_item_exit,
+              exitDone: styles.review_item_exit_active
+            }}
+          >
+            <Review key={id} id={id} />
+          </CSSTransition>
+
+        ))}
+      </TransitionGroup>
+
       <ReviewForm restId={restId} />
     </div>
   );
