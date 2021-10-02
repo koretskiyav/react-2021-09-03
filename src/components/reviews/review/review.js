@@ -16,7 +16,6 @@ const Review = ({ user, text, rating, userLoaded, userLoading, loadUsers }) => {
     }
   },[userLoading, userLoaded, loadUsers])
   if(userLoaded === false && userLoading === true){
-
     return (<Loader />);
   }
  return (
