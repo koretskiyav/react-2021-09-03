@@ -4,9 +4,22 @@ import PropTypes from 'prop-types';
 import Rate from '../../rate';
 import styles from './review.module.css';
 
-import { reviewWitUserSelector } from '../../../redux/selectors';
+import { reviewWitUserSelector, userLoadedSelector, userLoadingSelector } from '../../../redux/selectors';
+import { loadUsers } from '../../../redux/actions';
+import Loader from '../../loader';
+import { useEffect } from 'react';
 
-const Review = ({ user, text, rating }) => (
+const Review = ({ user, text, rating, userLoaded, userLoading, loadUsers }) => {
+  useEffect(() => {
+    if(userLoaded === false  && userLoading === false) {
+      loadUsers();
+    }
+  },[userLoading, userLoaded, loadUsers])
+  if(userLoaded === false && userLoading === true){
+
+    return (<Loader />);
+  }
+ return (
   <div className={styles.review} data-id="review">
     <div className={styles.content}>
       <div>
@@ -22,7 +35,7 @@ const Review = ({ user, text, rating }) => (
       </div>
     </div>
   </div>
-);
+)};
 
 Review.propTypes = {
   user: PropTypes.string,
@@ -39,7 +52,13 @@ Review.defaultProps = {
 // });
 
 // const mapStateToProps = (state, props) => reviewWitUserSelector(state, props);
+const mapStateToProps = (state, props) => ({
+  ...reviewWitUserSelector(state, props),
+  userLoaded: userLoadedSelector(state),
+  userLoading: userLoadingSelector(state)
+});
+const mapDispatchToProps = {
+  loadUsers
+};
 
-const mapStateToProps = reviewWitUserSelector;
-
-export default connect(mapStateToProps)(Review);
+export default connect(mapStateToProps, mapDispatchToProps)(Review);
