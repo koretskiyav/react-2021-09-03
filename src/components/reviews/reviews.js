@@ -9,8 +9,9 @@ import { loadReviews } from '../../redux/actions';
 
 const Reviews = ({ reviews, restId, loadReviews }) => {
   useEffect(() => {
+    if(!reviews)
     loadReviews(restId);
-  }, [restId, loadReviews]);
+  }, [restId, reviews, loadReviews]);
 
   return (
     <div className={styles.reviews}>
