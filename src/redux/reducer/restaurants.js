@@ -19,7 +19,6 @@ const initialState = {
 
 export default (state = initialState, action) => {
   const { type, restId, reviewId, activeId, data, error } = action;
-
   switch (type) {
     case LOAD_RESTAURANTS + REQUEST:
       return {

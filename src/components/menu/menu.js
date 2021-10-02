@@ -5,30 +5,36 @@ import Product from '../product';
 import Basket from '../basket';
 
 import styles from './menu.module.css';
+import { connect } from 'react-redux';
+import { loadProducts } from '../../redux/actions';
+import { productsLoadedSelector, productsLoadingSelector } from '../../redux/selectors';
+import { useEffect } from 'react';
+import { productsSelector } from '../../redux/selectors';
 
-class Menu extends Component {
-  static propTypes = {
-    menu: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-  };
+const Menu = ({menu,
+               error,
+               restId,
+              loaded,
+              loading,
+              loadProducts,
+              products
+              }) =>{
 
-  state = { error: null };
-
-  componentDidCatch(error) {
-    this.setState({ error });
+  useEffect(() => {
+    if(!products)
+      loadProducts(restId);
+  }, [restId, products, loadProducts]);
+  if (error) {
+    return <p>Меню этого ресторана сейчас недоступно :(</p>;
   }
-
-  render() {
-    const { menu } = this.props;
-
-    if (this.state.error) {
-      return <p>Меню этого ресторана сейчас недоступно :(</p>;
-    }
-
+  if(loaded === false && loading === true){
+    return <p>Loading products ...</p>
+  }
     return (
       <div className={styles.menu}>
         <div>
           {menu.map((id) => (
-            <Product key={id} id={id} />
+            <Product key={id} id={id} restId={restId} loaded={loaded}/>
           ))}
         </div>
         <div>
@@ -36,7 +42,13 @@ class Menu extends Component {
         </div>
       </div>
     );
-  }
 }
-
-export default Menu;
+const mapStateToProps = (state) =>({
+  loaded: productsLoadedSelector(state),
+  loading: productsLoadingSelector(state),
+  products: productsSelector(state)
+});
+const mapDispatchToProps = {
+  loadProducts
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Menu);

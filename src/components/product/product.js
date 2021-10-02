@@ -5,11 +5,13 @@ import styles from './product.module.css';
 import Button from '../button';
 import { decrement, increment } from '../../redux/actions';
 import { amountSelector, productSelector } from '../../redux/selectors';
+import Loader from '../loader';
 
-function Product({ product, amount, decrement, increment, fetchData }) {
-  useEffect(() => {
-    fetchData && fetchData(product.id);
-  }, []); // eslint-disable-line
+function Product({ product, amount, decrement, increment, fetchData, loaded }) {
+
+  if(!product) {
+    return (<Loader />)
+  }
 
   return (
     <div className={styles.product} data-id="product">
@@ -48,7 +50,7 @@ Product.propTypes = {
     name: PropTypes.string,
     price: PropTypes.number,
     ingredients: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-  }).isRequired,
+  }),
   fetchData: PropTypes.func,
   // from connect
   amount: PropTypes.number,
