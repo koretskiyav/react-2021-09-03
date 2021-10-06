@@ -27,7 +27,7 @@ function Restaurants({ restaurants, loading, loaded, loadRestaurants }) {
         {restaurants.map(({ id, name }) => (
           <NavLink
             key={id}
-            to={`/restaurants/${id}`}
+            to={`/restaurants/${id}/`}
             className={styles.tab}
             activeClassName={styles.active}
           >
@@ -36,10 +36,14 @@ function Restaurants({ restaurants, loading, loaded, loadRestaurants }) {
         ))}
       </div>
       <Switch>
-        <Route path="/restaurants/:restId">
-          {({ match }) => <Restaurant id={match.params.restId} />}
+        <Route path="/restaurants/:restId/menu">
+          {({ match }) => <Restaurant id={match.params.restId} tab='menu' />}
         </Route>
-        <Redirect to={`/restaurants/${restaurants[3].id}`} />
+        <Route path="/restaurants/:restId/reviews">
+          {({ match }) => <Restaurant id={match.params.restId} tab='reviews'/>}
+        </Route>
+        <Redirect to={`/restaurants/:restId/menu/`} from={`/restaurants/:restId/`}/>
+        <Redirect to={`/restaurants/${restaurants[3].id}/menu`} />
       </Switch>
     </div>
   );

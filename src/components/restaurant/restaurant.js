@@ -1,24 +1,26 @@
-import { useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Menu from '../menu';
 import Reviews from '../reviews';
 import Banner from '../banner';
 import Rate from '../rate';
-import Tabs from '../tabs';
+import { NavLink } from 'react-router-dom';
 import {
   averageRatingSelector,
   restaurantSelector,
 } from '../../redux/selectors';
+import styles from '../tabs/tabs.module.css';
+import cn from 'classnames';
 
-const Restaurant = ({ restaurant, averageRating }) => {
+const Restaurant = ({ restaurant, averageRating, tab = 'menu' }) => {
   const { id, name, menu, reviews } = restaurant;
 
-  const [activeTab, setActiveTab] = useState('menu');
+  const activeTab = tab;
+
 
   const tabs = [
-    { id: 'menu', label: 'Menu' },
-    { id: 'reviews', label: 'Reviews' },
+    { tabId: 'menu', label: 'Menu' },
+    { tabId: 'reviews', label: 'Reviews' },
   ];
 
   return (
@@ -26,7 +28,18 @@ const Restaurant = ({ restaurant, averageRating }) => {
       <Banner heading={name}>
         <Rate value={averageRating} />
       </Banner>
-      <Tabs tabs={tabs} activeId={activeTab} onChange={setActiveTab} />
+      <div className={styles.tabs}>
+        {tabs.map(({ tabId, label }) => (
+          <NavLink  key={tabId} to={`/restaurants/${id}/${tabId}`}>
+          <span
+            key={tabId}
+            className={cn(styles.tab, { [styles.active]: tabId === activeTab })}
+          >
+          {label}
+        </span>
+          </NavLink>
+        ))}
+      </div>
       {activeTab === 'menu' && <Menu menu={menu} key={id} restId={id} />}
       {activeTab === 'reviews' && <Reviews reviews={reviews} restId={id} />}
     </div>
