@@ -3,11 +3,13 @@ import cn from 'classnames';
 import { increment, decrement, remove } from '../../../redux/actions';
 import Button from '../../button';
 import styles from './basket-item.module.css';
+import { NavLink } from 'react-router-dom';
 
 function BasketItem({
   product,
   amount,
   subtotal,
+  restId,
   increment,
   decrement,
   remove,
@@ -25,6 +27,9 @@ function BasketItem({
         </div>
         <p className={cn(styles.count, styles.price)}>{subtotal} $</p>
         <Button onClick={remove} icon="delete" secondary small />
+        <NavLink key={restId} to={`/restaurants/${restId}/`}>
+          <span>Go to restaurant</span>
+        </NavLink>
       </div>
     </div>
   );

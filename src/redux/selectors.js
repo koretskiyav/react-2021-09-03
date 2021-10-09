@@ -43,6 +43,7 @@ export const orderProductsSelector = createSelector(
         product,
         amount: order[product.id],
         subtotal: order[product.id] * product.price,
+        restId: order['restId-'+product.id]
       }))
 );
 
