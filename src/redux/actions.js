@@ -12,6 +12,7 @@ import {
   REQUEST,
   SUCCESS,
   FAILURE,
+  PLACE_ORDER
 } from './constants';
 
 import {
@@ -19,6 +20,7 @@ import {
   usersLoadedSelector,
   reviewsLoadingSelector,
   reviewsLoadedSelector,
+  orderProductsSelector,
 } from './selectors';
 
 export const increment = (id) => ({ type: INCREMENT, id });
@@ -77,3 +79,28 @@ export const loadUsers = () => async (dispatch, getState) => {
 
   dispatch(_loadUsers());
 };
+
+export const placeOrder = () => async(dispatch, getState) =>{
+    const state = getState();
+    const orderProducts = orderProductsSelector(state);
+    try{
+      const orderData = orderProducts.map((product)=>({
+        id: product?.product.id,
+        amount: product.amount
+      }));
+      dispatch({type: PLACE_ORDER + REQUEST, ...orderData});
+      const data = await fetch('/api/order',
+        { method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(orderData)}).then((res)=> res.json());
+      if(data === 'ok'){
+        dispatch({type: PLACE_ORDER + SUCCESS, result:data});
+        dispatch(replace('/'));
+      }else{
+        dispatch({type:PLACE_ORDER + FAILURE, error:data});
+        dispatch(replace('/error'));
+      }
+    }catch (error) {
+      dispatch({type: PLACE_ORDER + FAILURE, error});
+      dispatch(replace('/error'));
+    }
+}

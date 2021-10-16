@@ -1,14 +1,13 @@
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import styles from './basket.module.css';
 import './basket.css';
 import itemStyles from './basket-item/basket-item.module.css';
 import BasketItem from './basket-item';
-import Button from '../button';
 import { orderProductsSelector, totalSelector } from '../../redux/selectors';
 import { UserConsumer } from '../../contexts/user-context';
+import ButtonCheckout from '../button-checkout/';
 
 function Basket({ title = 'Basket', total, orderProducts }) {
   // const { name } = useContext(userContext);
@@ -52,11 +51,7 @@ function Basket({ title = 'Basket', total, orderProducts }) {
           <p>{`${total} $`}</p>
         </div>
       </div>
-      <Link to="/checkout">
-        <Button primary block>
-          checkout
-        </Button>
-      </Link>
+      <ButtonCheckout />
     </div>
   );
 }
@@ -67,5 +62,4 @@ const mapStateToProps = (state) => {
     orderProducts: orderProductsSelector(state),
   };
 };
-
 export default connect(mapStateToProps)(Basket);

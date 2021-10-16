@@ -2,13 +2,15 @@ import { createSelector } from 'reselect';
 
 const restaurantsSelector = (state) => state.restaurants.entities;
 const productsSelector = (state) => state.products.entities;
-const orderSelector = (state) => state.order;
+const orderSelector = (state) => state.order.entities;
 const reviewsSelector = (state) => state.reviews.entities;
 const usersSelector = (state) => state.users.entities;
 
 export const activeRestaurantIdSelector = (state) => state.restaurants.activeId;
 export const restaurantsLoadingSelector = (state) => state.restaurants.loading;
 export const restaurantsLoadedSelector = (state) => state.restaurants.loaded;
+export const isPlacingOrder = (state) => state.order?.loading;
+export const selectedError = (state) => state.error?.error;
 
 export const productsLoadingSelector = (state, props) =>
   state.products.loading[props.restId];
@@ -34,6 +36,8 @@ export const productSelector = (state, { id }) => productsSelector(state)[id];
 export const reviewSelector = (state, { id }) => reviewsSelector(state)[id];
 export const amountSelector = (state, { id }) => orderSelector(state)[id] || 0;
 
+export const router = (state) => state.router;
+
 const restaurantsIdsByProductsSelector = createSelector(
   restaurantsListSelector,
   (restaurants) =>
@@ -51,7 +55,7 @@ export const orderProductsSelector = createSelector(
   [productsSelector, orderSelector, restaurantsIdsByProductsSelector],
   (products, order, restaurantsIds) =>
     Object.keys(order)
-      .filter((productId) => order[productId] > 0)
+      .filter((productId) =>  order[productId] > 0)
       .map((productId) => products[productId])
       .map((product) => ({
         product,
