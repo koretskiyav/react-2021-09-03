@@ -5,7 +5,6 @@
   border: 1px solid var(--grey);
   background-color: var(--white);
   color: var(--black);
-  transition: 0.2s all;
 }
 
 .content {
@@ -53,5 +52,25 @@
   .comment {
     font-size: 14px;
     line-height: 20px;
+  }
+  .review-review-enter {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  .review-enter-active {
+    opacity: 1;
+    transform: translateX(0);
+    transition: opacity 500ms, transform 500ms;
+  }
+
+  .review-exit {
+    opacity: 1;
+  }
+
+  .review-exit-active {
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 500ms, transform 500ms;
   }
 }
